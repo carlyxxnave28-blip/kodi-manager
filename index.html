@@ -1,143 +1,149 @@
+
 <!DOCTYPE html>
 <html lang="sw">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <meta name="theme-color" content="#060c18"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
 <title>KodiManager 🏠</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{background:#060c18;color:#f1f5f9;font-family:'Outfit',sans-serif;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
+html{font-size:16px}
+body{background:#060c18;color:#f1f5f9;font-family:'Outfit',sans-serif;-webkit-tap-highlight-color:transparent;overscroll-behavior:none;min-height:100vh;min-height:100dvh}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#111827}::-webkit-scrollbar-thumb{background:#10b981;border-radius:4px}
-input,select,textarea,button{font-family:inherit}
-#root{min-height:100vh}
-.app{min-height:100vh;display:flex;flex-direction:column}
-.header{position:sticky;top:0;z-index:40;background:rgba(6,12,24,0.95);backdrop-filter:blur(16px);border-bottom:1px solid #111827}
+input,select,textarea,button{font-family:inherit;font-size:16px}
+#root{min-height:100vh;min-height:100dvh}
+.app{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+.header{position:sticky;top:0;z-index:40;background:rgba(6,12,24,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid #111827}
 .header-inner{max-width:640px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:10px}
-.brand-icon{width:38px;height:38px;background:linear-gradient(135deg,#10b981,#059669);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
-.brand-name{font-size:1.05rem;font-weight:800;color:#f1f5f9;letter-spacing:-0.3px}
-.brand-sub{font-size:0.7rem;color:#6b7280}
-.header-actions{display:flex;align-items:center;gap:8px}
-.icon-btn{background:rgba(255,255,255,0.06);border:1px solid #1f2937;color:#9ca3af;border-radius:8px;width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.notif-btn{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:#10b981;border-radius:8px;padding:6px 10px;font-size:0.73rem;cursor:pointer;font-weight:700;white-space:nowrap}
-.alert-banner{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
-.alert-title{font-size:0.85rem;font-weight:700;color:#f59e0b}
-.alert-item{font-size:0.8rem;color:#d1d5db;display:flex;justify-content:space-between;align-items:center}
-.alert-mail{background:transparent;border:none;color:#10b981;font-size:0.75rem;font-weight:700;cursor:pointer;padding:0;text-decoration:underline}
-.main{flex:1;max-width:640px;width:100%;margin:0 auto;padding:12px 14px 100px}
+.brand-icon{width:38px;height:38px;min-width:38px;background:linear-gradient(135deg,#10b981,#059669);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.brand-name{font-size:1rem;font-weight:800;color:#f1f5f9;letter-spacing:-0.3px}
+.brand-sub{font-size:0.68rem;color:#6b7280}
+.header-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.icon-btn{background:rgba(255,255,255,0.06);border:1px solid #1f2937;color:#9ca3af;border-radius:8px;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.notif-btn{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:#10b981;border-radius:8px;padding:6px 10px;font-size:0.72rem;cursor:pointer;font-weight:700;white-space:nowrap}
+.main{flex:1;max-width:640px;width:100%;margin:0 auto;padding:12px 14px 100px;padding-bottom:calc(90px + env(safe-area-inset-bottom))}
 .view{display:flex;flex-direction:column;gap:12px}
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .stat-card{background:#111827;border:1px solid #1f2937;border-top:2px solid var(--accent);border-radius:14px;padding:14px 12px;display:flex;flex-direction:column;gap:2px}
-.stat-icon{font-size:1.3rem}.stat-val{font-size:1.8rem;font-weight:900;color:var(--accent);line-height:1}
-.stat-label{font-size:0.75rem;color:#6b7280;font-weight:500}
-.section-head{display:flex;flex-direction:column;gap:2px;padding:4px 0}
-.section-title{font-size:1.15rem;font-weight:700;color:#f1f5f9}
-.section-sub{font-size:0.78rem;color:#6b7280}
+.stat-icon{font-size:1.2rem}.stat-val{font-size:1.7rem;font-weight:900;color:var(--accent);line-height:1}
+.stat-label{font-size:0.72rem;color:#6b7280;font-weight:500}
+.section-title{font-size:1.1rem;font-weight:700;color:#f1f5f9}
+.section-sub{font-size:0.75rem;color:#6b7280}
 .search-wrap{display:flex;align-items:center;gap:10px;background:#111827;border:1.5px solid #1f2937;border-radius:12px;padding:10px 14px}
-.search-input{flex:1;background:transparent;border:none;outline:none;color:#f1f5f9;font-size:0.9rem}
+.search-input{flex:1;background:transparent;border:none;outline:none;color:#f1f5f9;font-size:0.9rem;min-width:0}
 .search-input::placeholder{color:#4b5563}
 .card-list{display:flex;flex-direction:column;gap:9px}
-.card{background:#111827;border:1px solid #1f2937;border-left:3px solid var(--left,#1f2937);border-radius:14px;padding:14px;transition:border-color .2s}
-.card:active{opacity:.85}
-.card-row{display:flex;align-items:center;gap:11px}
+.card{background:#111827;border:1px solid #1f2937;border-left:3px solid var(--left,#1f2937);border-radius:14px;padding:14px}
+.card-row{display:flex;align-items:center;gap:10px}
 .card-info{flex:1;min-width:0}
-.card-name{font-weight:600;font-size:.98rem;color:#f1f5f9}
-.card-sub{font-size:.76rem;color:#6b7280;margin-top:1px}
+.card-name{font-weight:700;font-size:0.95rem;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-sub{font-size:0.73rem;color:#6b7280;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .card-dates{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
 .date-box{background:#1a2234;border-radius:9px;padding:7px 10px}
-.date-label{font-size:.63rem;color:#6b7280;margin-bottom:2px}
-.date-val{font-size:.82rem;font-weight:600;color:#f1f5f9}
-.avatar{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:800;flex-shrink:0}
-.tag{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:.72rem;font-weight:700;flex-shrink:0}
+.date-label{font-size:0.62rem;color:#6b7280;margin-bottom:2px}
+.date-val{font-size:0.8rem;font-weight:600;color:#f1f5f9}
+.avatar{width:40px;height:40px;min-width:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800}
+.tag{display:inline-flex;align-items:center;padding:3px 8px;border-radius:20px;font-size:0.7rem;font-weight:700;flex-shrink:0;white-space:nowrap}
 .tag-green{background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.25)}
 .tag-amber{background:rgba(245,158,11,.12);color:#f59e0b;border:1px solid rgba(245,158,11,.25)}
 .tag-red{background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.25)}
 .tag-gray{background:rgba(156,163,175,.1);color:#9ca3af;border:1px solid rgba(156,163,175,.2)}
 .chip{background:#1a2234;border-radius:9px;padding:8px 10px}
 .chip-sm{padding:5px 8px}
-.chip-label{font-size:.65rem;color:#6b7280;margin-bottom:2px}
-.chip-val{font-size:.85rem;font-weight:600}
-.chip-sm .chip-val{font-size:.78rem}
+.chip-label{font-size:0.62rem;color:#6b7280;margin-bottom:2px}
+.chip-val{font-size:0.82rem;font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.chip-sm .chip-val{font-size:0.75rem}
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.detail-header{background:#111827;border:1px solid #1f2937;border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px}
-.detail-avatar{width:58px;height:58px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,rgba(16,185,129,.2),rgba(5,150,105,.1));color:#10b981;border:1px solid rgba(16,185,129,.3);flex-shrink:0}
-.detail-info{flex:1;display:flex;flex-direction:column;gap:4px}
-.detail-name{font-size:1.2rem;font-weight:700;color:#f1f5f9}
-.detail-room{font-size:.8rem;color:#6b7280}
-.expiry-bar{border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;font-size:.85rem;font-weight:600}
+.detail-header{background:#111827;border:1px solid #1f2937;border-radius:16px;padding:16px;display:flex;align-items:center;gap:12px}
+.detail-avatar{width:54px;height:54px;min-width:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,rgba(16,185,129,.2),rgba(5,150,105,.1));color:#10b981;border:1px solid rgba(16,185,129,.3)}
+.detail-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.detail-name{font-size:1.1rem;font-weight:700;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.detail-room{font-size:0.78rem;color:#6b7280}
+.expiry-bar{border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;font-size:0.82rem;font-weight:600;gap:8px;flex-wrap:wrap}
 .eb-green{background:rgba(16,185,129,.08);color:#10b981;border:1px solid rgba(16,185,129,.2)}
 .eb-amber{background:rgba(245,158,11,.08);color:#f59e0b;border:1px solid rgba(245,158,11,.2)}
 .eb-red{background:rgba(239,68,68,.08);color:#ef4444;border:1px solid rgba(239,68,68,.2)}
-.debt-bar{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;font-size:.85rem;color:#ef4444;font-weight:600}
-.locked-badge{background:rgba(239,68,68,.15);padding:2px 8px;border-radius:8px;font-size:.78rem}
-.tabs{display:flex;background:#111827;border-radius:12px;padding:4px;gap:4px}
-.tab{flex:1;padding:10px;border-radius:9px;border:none;background:transparent;color:#6b7280;font-weight:600;cursor:pointer;font-size:.85rem;transition:all .2s}
+.eb-gray{background:rgba(156,163,175,.06);color:#9ca3af;border:1px solid rgba(156,163,175,.15)}
+.debt-bar{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;font-size:0.82rem;color:#ef4444;font-weight:600;flex-wrap:wrap;gap:6px}
+.locked-badge{background:rgba(239,68,68,.15);padding:2px 8px;border-radius:8px;font-size:0.75rem}
+.tabs{display:flex;background:#111827;border-radius:12px;padding:4px;gap:3px;overflow-x:auto}
+.tab{flex:1;min-width:fit-content;padding:9px 8px;border-radius:9px;border:none;background:transparent;color:#6b7280;font-weight:600;cursor:pointer;font-size:0.78rem;transition:all .2s;white-space:nowrap}
 .tab-active{background:#1f2937;color:#10b981}
 .payment-card{background:#111827;border:1px solid #1f2937;border-left:3px solid #10b981;border-radius:13px;padding:13px}
-.payment-top{display:flex;justify-content:space-between;align-items:flex-start}
-.payment-amount{font-size:1.05rem;font-weight:700;color:#10b981}
-.payment-date{font-size:.78rem;color:#6b7280;margin-top:2px}
-.payment-note{font-size:.78rem;color:#9ca3af;margin-top:4px;font-style:italic}
-.payment-right{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
-.receipt-no{font-family:'DM Mono',monospace;font-size:.75rem;background:rgba(16,185,129,.1);color:#10b981;padding:2px 8px;border-radius:6px}
-.receipt-num{font-size:.7rem;color:#6b7280}
-.receipt-icon-btn{background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.25);color:#818cf8;border-radius:7px;padding:3px 8px;font-size:0.72rem;cursor:pointer;font-weight:600;display:flex;align-items:center;gap:4px}
-.edit-pay-btn{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);color:#f59e0b;border-radius:7px;padding:3px 8px;font-size:0.72rem;cursor:pointer;font-weight:600}
+.payment-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.payment-amount{font-size:1rem;font-weight:700;color:#10b981}
+.payment-date{font-size:0.75rem;color:#6b7280;margin-top:2px}
+.payment-note{font-size:0.75rem;color:#9ca3af;margin-top:3px;font-style:italic}
+.payment-right{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.receipt-no{font-family:'DM Mono',monospace;font-size:0.72rem;background:rgba(16,185,129,.1);color:#10b981;padding:2px 7px;border-radius:6px}
+.receipt-num{font-size:0.68rem;color:#6b7280}
+.small-btn{border-radius:7px;padding:3px 8px;font-size:0.7rem;cursor:pointer;font-weight:600;border:1px solid;background:transparent}
+.small-btn-blue{color:#818cf8;border-color:rgba(129,140,248,.3)}
+.small-btn-amber{color:#f59e0b;border-color:rgba(245,158,11,.3)}
+.small-btn-red{color:#ef4444;border-color:rgba(239,68,68,.2);background:transparent}
 .doc-card{background:#111827;border:1px solid #1f2937;border-radius:13px;padding:13px}
-.doc-name{font-weight:600;font-size:.95rem;margin-bottom:4px}
-.doc-type{font-size:.78rem;color:#6b7280;margin-bottom:8px}
-.doc-img{width:100%;border-radius:8px;max-height:220px;object-fit:cover;cursor:pointer}
-.btn-primary{background:linear-gradient(135deg,#10b981,#059669);color:#fff;border:none;border-radius:11px;padding:13px 18px;font-size:.95rem;font-weight:700;cursor:pointer;transition:opacity .2s,transform .1s;text-align:center}
+.doc-name{font-weight:600;font-size:0.92rem;margin-bottom:4px}
+.doc-type{font-size:0.75rem;color:#6b7280;margin-bottom:8px}
+.btn-primary{background:linear-gradient(135deg,#10b981,#059669);color:#fff;border:none;border-radius:11px;padding:13px 18px;font-size:0.95rem;font-weight:700;cursor:pointer;transition:opacity .2s,transform .1s;text-align:center;width:100%}
 .btn-primary:active{opacity:.85;transform:scale(.97)}
-.btn-ghost{background:transparent;border:1.5px solid #374151;color:#9ca3af;border-radius:11px;padding:12px 18px;font-size:.9rem;cursor:pointer;font-weight:600;transition:all .2s}
+.btn-ghost{background:transparent;border:1.5px solid #374151;color:#9ca3af;border-radius:11px;padding:12px 18px;font-size:0.9rem;cursor:pointer;font-weight:600;transition:all .2s;width:100%}
 .btn-ghost:hover{border-color:#10b981;color:#10b981}
-.btn-email{background:rgba(16,185,129,0.08);border:1.5px solid rgba(16,185,129,0.25);color:#10b981;border-radius:11px;padding:12px 18px;font-size:.9rem;cursor:pointer;font-weight:700;width:100%;text-align:center;display:block;text-decoration:none}
-.btn-lock{border:none;border-radius:11px;padding:13px 18px;font-size:.9rem;font-weight:700;cursor:pointer}
+.btn-email{background:rgba(16,185,129,0.08);border:1.5px solid rgba(16,185,129,0.25);color:#10b981;border-radius:11px;padding:12px 18px;font-size:0.88rem;cursor:pointer;font-weight:700;width:100%;text-align:center;display:block;text-decoration:none}
+.btn-lock{border:none;border-radius:11px;padding:13px 18px;font-size:0.9rem;font-weight:700;cursor:pointer;width:100%}
 .btn-lock-l{background:rgba(239,68,68,.1);color:#ef4444}
 .btn-lock-u{background:rgba(16,185,129,.1);color:#10b981}
-.btn-delete{width:100%;padding:13px;border-radius:11px;border:1px solid rgba(239,68,68,.25);background:rgba(239,68,68,.06);color:#ef4444;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn-delete{width:100%;padding:13px;border-radius:11px;border:1px solid rgba(239,68,68,.25);background:rgba(239,68,68,.06);color:#ef4444;font-weight:700;cursor:pointer;font-size:0.9rem}
+.btn-edit{width:100%;padding:12px;border-radius:11px;border:1px solid rgba(245,158,11,.25);background:rgba(245,158,11,.06);color:#f59e0b;font-weight:700;cursor:pointer;font-size:0.9rem}
 .action-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.back-btn{display:flex;align-items:center;gap:6px;background:transparent;border:none;color:#10b981;cursor:pointer;font-weight:700;font-size:.92rem;padding:0;margin-bottom:4px}
+.back-btn{display:flex;align-items:center;gap:6px;background:transparent;border:none;color:#10b981;cursor:pointer;font-weight:700;font-size:0.9rem;padding:0;margin-bottom:4px}
 .divider{height:1px;background:#1f2937;margin:4px 0}
-.empty{text-align:center;padding:48px 20px;color:#6b7280}
-.empty-icon{font-size:3rem;margin-bottom:12px}
-.empty-title{font-weight:700;font-size:1.05rem;color:#9ca3af;margin-bottom:6px}
-.empty-sub{font-size:.85rem}
-.fab{position:fixed;bottom:82px;right:18px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(16,185,129,.45);z-index:50;transition:transform .2s}
-.fab:active{transform:scale(.92)}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,16,30,.97);border-top:1px solid #111827;display:flex;padding:8px 0 12px;z-index:50;backdrop-filter:blur(20px)}
-.nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;background:transparent;border:none;color:#6b7280;cursor:pointer;font-size:.65rem;font-weight:700;padding:4px;position:relative}
+.empty{text-align:center;padding:40px 20px;color:#6b7280}
+.empty-icon{font-size:2.8rem;margin-bottom:12px}
+.empty-title{font-weight:700;font-size:1rem;color:#9ca3af;margin-bottom:6px}
+.empty-sub{font-size:0.82rem}
+.alert-banner{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.alert-title{font-size:0.83rem;font-weight:700;color:#f59e0b}
+.alert-item{font-size:0.78rem;color:#d1d5db;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px}
+.alert-mail{background:transparent;border:none;color:#10b981;font-size:0.73rem;font-weight:700;cursor:pointer;padding:0;text-decoration:underline;white-space:nowrap}
+.fab{position:fixed;bottom:calc(76px + env(safe-area-inset-bottom));right:16px;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(16,185,129,.45);z-index:50;transition:transform .2s}
+.fab:active{transform:scale(.9)}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(8,14,26,.98);border-top:1px solid #111827;display:flex;padding:8px 0;padding-bottom:calc(8px + env(safe-area-inset-bottom));z-index:50;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;background:transparent;border:none;color:#6b7280;cursor:pointer;font-size:0.62rem;font-weight:700;padding:4px 2px;position:relative;-webkit-tap-highlight-color:transparent}
 .nav-btn.active{color:#10b981}
-.nav-badge{position:absolute;top:-2px;right:10px;background:#ef4444;color:#fff;border-radius:10px;padding:1px 5px;font-size:.6rem;font-weight:800;line-height:1.3}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:100;display:flex;align-items:flex-end;justify-content:center}
-@media(min-width:600px){.overlay{align-items:center}}
-.modal{background:#0f1924;border:1px solid #1f2937;border-radius:22px 22px 0 0;width:100%;max-width:520px;padding:20px;max-height:92vh;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
-@media(min-width:600px){.modal{border-radius:22px}}
-.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
-.modal-title{font-size:1.1rem;font-weight:800;color:#f1f5f9}
-.close-btn{background:#1f2937;border:none;color:#9ca3af;border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center}
+.nav-badge{position:absolute;top:-2px;right:8px;background:#ef4444;color:#fff;border-radius:10px;padding:1px 4px;font-size:0.58rem;font-weight:800;line-height:1.3}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:100;display:flex;align-items:flex-end;justify-content:center;padding:0}
+.modal{background:#0d1521;border:1px solid #1f2937;border-radius:20px 20px 0 0;width:100%;max-width:520px;padding:20px;padding-bottom:calc(20px + env(safe-area-inset-bottom));max-height:92vh;max-height:92dvh;overflow-y:auto;display:flex;flex-direction:column;gap:11px}
+@media(min-width:580px){.overlay{align-items:center;padding:16px}.modal{border-radius:20px;padding-bottom:20px}}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+.modal-title{font-size:1.05rem;font-weight:800;color:#f1f5f9}
+.close-btn{background:#1f2937;border:none;color:#9ca3af;border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
-.field{display:flex;flex-direction:column;gap:6px}
-.field-label{font-size:.78rem;color:#9ca3af;font-weight:600}
-.inp{background:#1a2234;border:1.5px solid #1f2937;border-radius:11px;padding:12px 13px;color:#f1f5f9;font-size:.92rem;outline:none;transition:border-color .2s;width:100%}
+.field{display:flex;flex-direction:column;gap:5px}
+.field-label{font-size:0.75rem;color:#9ca3af;font-weight:600}
+.inp{background:#1a2234;border:1.5px solid #1f2937;border-radius:11px;padding:12px 13px;color:#f1f5f9;font-size:0.92rem;outline:none;transition:border-color .2s;width:100%;-webkit-appearance:none}
 .inp:focus{border-color:#10b981}
 .inp-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.upload-zone{display:block;background:#1a2234;border:1.5px dashed #374151;border-radius:11px;padding:18px;text-align:center;cursor:pointer;color:#6b7280;font-size:.875rem;transition:border-color .2s}
+.inp-hint{font-size:0.68rem;color:#6b7280;margin-top:2px}
+.upload-zone{display:block;background:#1a2234;border:1.5px dashed #374151;border-radius:11px;padding:16px;text-align:center;cursor:pointer;color:#6b7280;font-size:0.85rem;transition:border-color .2s}
 .upload-zone:hover{border-color:#10b981}
-.preview-img{width:100%;border-radius:9px;margin-top:8px;max-height:160px;object-fit:cover}
-.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:12px;z-index:200;font-weight:700;font-size:.88rem;box-shadow:0 4px 20px rgba(0,0,0,.4);white-space:nowrap;animation:slideDown .3s ease}
+.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);padding:10px 18px;border-radius:12px;z-index:200;font-weight:700;font-size:0.85rem;box-shadow:0 4px 20px rgba(0,0,0,.5);white-space:nowrap;animation:slideDown .3s ease;max-width:90vw;text-align:center}
 .toast-ok{background:#064e3b;color:#6ee7b7;border:1px solid rgba(16,185,129,.3)}
 .toast-err{background:#7f1d1d;color:#fca5a5;border:1px solid rgba(239,68,68,.3)}
 @keyframes slideDown{from{transform:translateX(-50%) translateY(-12px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
-.slide-up{animation:slideUp .28s ease}
-@keyframes slideUp{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
-.period-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #1f2937;font-size:0.82rem}
-.period-paid{color:#10b981;font-weight:600}
-.period-due{color:#ef4444;font-weight:600}
-.period-label{color:#9ca3af}
+.slide-up{animation:slideUp .25s ease}
+@keyframes slideUp{from{transform:translateY(14px);opacity:0}to{transform:translateY(0);opacity:1}}
+.period-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #1a2234;font-size:0.8rem;flex-wrap:wrap;gap:4px}
+.period-paid{color:#10b981;font-weight:700}
+.period-due{color:#ef4444;font-weight:700}
+.period-label{color:#9ca3af;font-size:0.75rem}
+.reset-btn{width:100%;padding:12px;border-radius:11px;border:1px solid rgba(239,68,68,.3);background:rgba(239,68,68,.08);color:#ef4444;font-weight:700;cursor:pointer;font-size:0.88rem;margin-top:4px}
+.info-note{background:#1a2234;border-radius:10px;padding:12px;font-size:0.78rem;color:#9ca3af;line-height:1.6}
+.info-note b{color:#f1f5f9}
 </style>
 </head>
 <body>
@@ -155,28 +161,26 @@ const addMonths=(s,n)=>{const d=new Date(s);d.setMonth(d.getMonth()+parseInt(n))
 const daysFrom=s=>{if(!s)return null;const t=new Date();t.setHours(0,0,0,0);const e=new Date(s);e.setHours(0,0,0,0);return Math.floor((e-t)/86400000)};
 const fileToB64=f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)});
 
-// Rent is calculated from move-in date, not payment date
-// Each payment covers rentDuration months from move-in date
+// FIXED: First payment due after first full period from move-in date
 const getStatus=t=>{
   const anchor=t.moveInDate||t.createdAt;
   if(!anchor)return{label:"Hajalipa",color:"gray",days:null,expiry:null};
-  const periods=t.payments?.length||0;
   const duration=parseInt(t.rentDuration)||1;
-  const expiry=addMonths(anchor,periods*duration);
+  const periods=t.payments?.length||0;
+  // expiry = moveInDate + (periods paid + 1 if no payments) * duration
+  // If no payments: first due date = moveInDate + duration (give one full period)
+  // If has payments: expiry = moveInDate + periods * duration
+  const expiry=periods===0
+    ? addMonths(anchor, duration)  // first payment due after first period
+    : addMonths(anchor, periods*duration);
   const days=daysFrom(expiry);
   if(t.isLocked)return{label:"Imefungwa",color:"red",days,expiry};
-  if(periods===0){
-    // No payments yet — check if move-in has passed
-    const moveInDays=daysFrom(new Date(anchor));
-    if(moveInDays<0)return{label:"Hajalipa (Deni)",color:"red",days:moveInDays,expiry:new Date(anchor)};
-    return{label:"Hajalipa",color:"gray",days:null,expiry:null};
-  }
   if(days<0)return{label:"Imedaiwa",color:"red",days,expiry};
   if(days<=7)return{label:"Karibu Kwisha",color:"amber",days,expiry};
+  if(periods===0)return{label:"Hajalipa",color:"gray",days,expiry};
   return{label:"Imelipiwa",color:"green",days,expiry};
 };
 
-// Generate all rent periods for a tenant
 const getRentPeriods=t=>{
   const anchor=t.moveInDate||t.createdAt;
   if(!anchor)return[];
@@ -185,11 +189,9 @@ const getRentPeriods=t=>{
   const today=new Date();
   const periods=[];
   let i=0;
-  while(true){
+  while(i<Math.max(totalPaid,1)&&i<48){
     const start=addMonths(anchor,i*duration);
     const end=addMonths(anchor,(i+1)*duration);
-    if(start>today&&i>=totalPaid)break;
-    if(i>36)break; // max 3 years of periods
     const payment=t.payments?.[i]||null;
     periods.push({num:i+1,start,end,payment});
     i++;
@@ -198,26 +200,12 @@ const getRentPeriods=t=>{
   return periods;
 };
 
-const LS_KEY="kodimanager_v3";
-const SET_KEY="kodimanager_settings";
+const LS_KEY="kodimanager_v4";
+const SET_KEY="kodimanager_settings_v2";
 const load=()=>{try{return JSON.parse(localStorage.getItem(LS_KEY)||"[]")}catch{return[]}};
 const persist=arr=>{try{localStorage.setItem(LS_KEY,JSON.stringify(arr))}catch{}};
 const loadSettings=()=>{try{return JSON.parse(localStorage.getItem(SET_KEY)||"{}")}catch{return{}}};
 const saveSettings=s=>{try{localStorage.setItem(SET_KEY,JSON.stringify(s))}catch{}};
-
-// Email helpers
-const makeOwnerEmail=(settings,tenants)=>{
-  const expiring=tenants.filter(t=>{const s=getStatus(t);return s.days!==null&&s.days<=7&&s.days>=0});
-  const overdue=tenants.filter(t=>{const s=getStatus(t);return s.days!==null&&s.days<0});
-  const lines=[
-    `KodiManager - Ripoti ya Kodi`,``,
-    expiring.length?`KARIBU KWISHA (${expiring.length}):`:"",
-    ...expiring.map(t=>{const s=getStatus(t);return`- ${t.name} (Chumba ${t.room}): Inaisha ${fmt(s.expiry)}`}),
-    overdue.length?`\nWADAIWA (${overdue.length}):`:"",
-    ...overdue.map(t=>{const s=getStatus(t);return`- ${t.name} (Chumba ${t.room}): Imechelewa siku ${Math.abs(s.days)}`}),
-  ].filter(x=>x!=="").join("\n");
-  return`mailto:${settings.ownerEmail||""}?subject=KodiManager%20-%20Ripoti%20ya%20Kodi&body=${encodeURIComponent(lines)}`;
-};
 
 const makeTenantEmail=(tenant)=>{
   const s=getStatus(tenant);
@@ -227,6 +215,18 @@ const makeTenantEmail=(tenant)=>{
     ?`Habari ${tenant.name},\n\nKodi yako ya chumba ${tenant.room} imekwisha tangu ${fmt(s.expiry)} (siku ${Math.abs(s.days)} zilizopita).\nKiasi: ${fmtTZS(tenant.rentAmount)} kwa mwezi.\n\nTafadhali lipa haraka iwezekanavyo.\n\nAsante.`
     :`Habari ${tenant.name},\n\nHii ni ukumbusho kwamba kodi yako ya chumba ${tenant.room} itakwisha tarehe ${fmt(s.expiry)} (baada ya siku ${s.days}).\nKiasi: ${fmtTZS(tenant.rentAmount)} kwa mwezi.\n\nTafadhali jitayarishe kulipa kwa wakati.\n\nAsante.`;
   return`mailto:${tenant.email||""}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+};
+
+const makeOwnerEmail=(settings,tenants)=>{
+  const expiring=tenants.filter(t=>{const s=getStatus(t);return s.days!==null&&s.days<=7&&s.days>=0});
+  const overdue=tenants.filter(t=>{const s=getStatus(t);return s.days!==null&&s.days<0});
+  const lines=[`KodiManager - Ripoti ya Kodi\n`,
+    expiring.length?`KARIBU KWISHA (${expiring.length}):`:null,
+    ...expiring.map(t=>{const s=getStatus(t);return`- ${t.name} (Chumba ${t.room}): Inaisha ${fmt(s.expiry)}`}),
+    overdue.length?`\nWADAIWA (${overdue.length}):`:null,
+    ...overdue.map(t=>{const s=getStatus(t);return`- ${t.name} (Chumba ${t.room}): Imechelewa siku ${Math.abs(s.days)}`}),
+  ].filter(Boolean).join("\n");
+  return`mailto:${settings.ownerEmail||""}?subject=${encodeURIComponent("KodiManager - Ripoti ya Kodi")}&body=${encodeURIComponent(lines)}`;
 };
 
 // ── APP ────────────────────────────────────────────────────────────────────
@@ -262,7 +262,7 @@ function App(){
   // Browser notifications
   useEffect(()=>{
     if(notifPerm!=="granted"||!tenants.length)return;
-    const seen=JSON.parse(localStorage.getItem("kodi_notif4")||"{}");
+    const seen=JSON.parse(localStorage.getItem("kodi_notif5")||"{}");
     const today=new Date().toDateString();
     tenants.forEach(t=>{
       const s=getStatus(t);
@@ -271,12 +271,16 @@ function App(){
         seen[t.id]=today;
       }
     });
-    localStorage.setItem("kodi_notif4",JSON.stringify(seen));
+    localStorage.setItem("kodi_notif5",JSON.stringify(seen));
   },[tenants,notifPerm]);
 
   const addTenant=data=>{
     const t={id:Date.now().toString(),...data,payments:[],documents:[],isLocked:false,createdAt:new Date().toISOString()};
     save([...tenants,t]);setModal(null);toast$(`${data.name} amesajiliwa! ✅`);
+  };
+  const editTenant=(tId,data)=>{
+    save(tenants.map(t=>t.id===tId?{...t,...data}:t));
+    setModal(null);toast$("Maelezo yamesasishwa! ✏️");
   };
   const addPayment=(tId,data)=>{
     save(tenants.map(t=>t.id===tId?{...t,payments:[...t.payments,{id:Date.now().toString(),...data}]}:t));
@@ -299,6 +303,11 @@ function App(){
   const deleteTenant=tId=>{
     if(!confirm("Una uhakika? Mpangaji atafutwa kabisa."))return;
     save(tenants.filter(t=>t.id!==tId));setSelectedId(null);toast$("Mpangaji amefutwa","err");
+  };
+  const resetAll=()=>{
+    if(!confirm("ONYO: Data yote itafutwa kabisa. Una uhakika?"))return;
+    if(!confirm("Bonyeza OK tena kuthibitisha — hii haiwezi kurudishwa."))return;
+    save([]);setSelectedId(null);setView("home");setModal(null);toast$("Data yote imefutwa","err");
   };
 
   const selected=tenants.find(t=>t.id===selectedId);
@@ -326,7 +335,7 @@ function App(){
                 }}>🔔 Arifa</button>
               )}
               <button className="icon-btn" onClick={()=>setModal("settings")} title="Mipangilio">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06-.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
               </button>
             </div>
           </div>
@@ -336,6 +345,7 @@ function App(){
           {selected?(
             <TenantDetail tenant={selected} settings={settings}
               onBack={()=>setSelectedId(null)}
+              onEdit={()=>{setModalCtx(selected);setModal("editTenant")}}
               onAddPayment={()=>{setModalCtx({tenantId:selected.id});setModal("pay")}}
               onEditPayment={(p)=>{setModalCtx({tenantId:selected.id,payment:p});setModal("editPay")}}
               onDeletePayment={(payId)=>deletePayment(selected.id,payId)}
@@ -353,7 +363,7 @@ function App(){
 
         {!selected&&(
           <button className="fab" onClick={()=>setModal("tenant")}>
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           </button>
         )}
 
@@ -370,10 +380,11 @@ function App(){
       </div>
 
       {modal==="tenant"&&<AddTenantModal onAdd={addTenant} onClose={()=>setModal(null)}/>}
+      {modal==="editTenant"&&<EditTenantModal tenant={modalCtx} onSave={(id,data)=>editTenant(id,data)} onClose={()=>setModal(null)}/>}
       {modal==="pay"&&<AddPaymentModal ctx={modalCtx} onAdd={addPayment} onClose={()=>setModal(null)}/>}
       {modal==="editPay"&&<EditPaymentModal ctx={modalCtx} onSave={editPayment} onClose={()=>setModal(null)}/>}
       {modal==="doc"&&<AddDocModal tenantId={modalCtx} onAdd={addDoc} onClose={()=>setModal(null)}/>}
-      {modal==="settings"&&<SettingsModal settings={settings} tenants={tenants} onSave={s=>{updSettings(s);setModal(null);toast$("Mipangilio imehifadhiwa! ⚙️")}} onClose={()=>setModal(null)}/>}
+      {modal==="settings"&&<SettingsModal settings={settings} tenants={tenants} onSave={s=>{updSettings(s);setModal(null);toast$("Mipangilio imehifadhiwa! ⚙️")}} onReset={resetAll} onClose={()=>setModal(null)}/>}
     </>
   );
 }
@@ -390,12 +401,11 @@ function NavBtn({label,active,onClick,icon,badge}){
   );
 }
 
-// ── HOME VIEW ──────────────────────────────────────────────────────────────
 function HomeView({tenants,allTenants,expiringSoon,search,setSearch,onSelect,settings}){
   const st=[
-    {label:"Wanaolipa",value:tenants.filter(t=>getStatus(t).color==="green").length,color:"#10b981",icon:"✅"},
-    {label:"Karibu Kwisha",value:tenants.filter(t=>getStatus(t).color==="amber").length,color:"#f59e0b",icon:"⚠️"},
-    {label:"Wadaiwa",value:tenants.filter(t=>getStatus(t).color==="red").length,color:"#ef4444",icon:"🔴"},
+    {label:"Wanaolipa",value:allTenants.filter(t=>getStatus(t).color==="green").length,color:"#10b981",icon:"✅"},
+    {label:"Karibu Kwisha",value:allTenants.filter(t=>getStatus(t).color==="amber").length,color:"#f59e0b",icon:"⚠️"},
+    {label:"Wadaiwa",value:allTenants.filter(t=>getStatus(t).color==="red").length,color:"#ef4444",icon:"🔴"},
     {label:"Wapangaji",value:allTenants.length,color:"#818cf8",icon:"👥"},
   ];
   return(
@@ -409,8 +419,6 @@ function HomeView({tenants,allTenants,expiringSoon,search,setSearch,onSelect,set
           </div>
         ))}
       </div>
-
-      {/* Alert banner for expiring soon */}
       {expiringSoon.length>0&&(
         <div className="alert-banner">
           <div className="alert-title">⚠️ Kodi Karibu Kwisha ({expiringSoon.length})</div>
@@ -424,31 +432,29 @@ function HomeView({tenants,allTenants,expiringSoon,search,setSearch,onSelect,set
             );
           })}
           {settings.ownerEmail&&(
-            <button className="alert-mail" style={{textAlign:"left",marginTop:4}} onClick={()=>window.open(makeOwnerEmail(settings,allTenants))}>
-              📧 Tuma ripoti kwa email yangu
+            <button className="alert-mail" style={{marginTop:4}} onClick={()=>window.open(makeOwnerEmail(settings,allTenants))}>
+              📧 Ripoti kwangu
             </button>
           )}
         </div>
       )}
-
       <SearchBar value={search} onChange={setSearch} placeholder="Tafuta jina au chumba..."/>
-      <div className="section-head">
-        <span className="section-title">Wapangaji Wote</span>
-        <span className="section-sub">Gusa kadi kuona maelezo</span>
+      <div>
+        <div className="section-title">Wapangaji Wote</div>
+        <div className="section-sub">Gusa kadi kuona maelezo kamili</div>
       </div>
-      {tenants.length===0?<Empty icon="🏘️" title="Hakuna wapangaji" sub='Gusa "+" kuongeza mpangaji wa kwanza'/>:
+      {tenants.length===0?<Empty icon="🏘️" title="Hakuna wapangaji" sub='Gusa "+" hapa chini kuongeza mpangaji'/>:
         <div className="card-list">{tenants.map(t=><TenantCard key={t.id} tenant={t} onClick={()=>onSelect(t.id)}/>)}</div>}
     </div>
   );
 }
 
-// ── OVERVIEW ──────────────────────────────────────────────────────────────
 function OverviewView({tenants,search,setSearch,onSelect}){
   return(
     <div className="view slide-up">
-      <div className="section-head">
-        <span className="section-title">Maelezo ya Wote</span>
-        <span className="section-sub">Rekodi kamili ya kila mpangaji</span>
+      <div>
+        <div className="section-title">Maelezo ya Wote</div>
+        <div className="section-sub">Rekodi kamili ya kila mpangaji</div>
       </div>
       <SearchBar value={search} onChange={setSearch} placeholder="Tafuta mpangaji..."/>
       {tenants.length===0?<Empty icon="📋" title="Hakuna wapangaji" sub="Anza kwa kuongeza wapangaji"/>:
@@ -457,13 +463,12 @@ function OverviewView({tenants,search,setSearch,onSelect}){
   );
 }
 
-// ── DEFAULTERS ────────────────────────────────────────────────────────────
 function DefaultersView({tenants,onSelect,onToggleLock}){
   return(
     <div className="view slide-up">
-      <div className="section-head">
-        <span className="section-title" style={{color:"#ef4444"}}>⚠️ Wadaiwa</span>
-        <span className="section-sub">Wapangaji ambao muda wa kodi umekwisha</span>
+      <div>
+        <div className="section-title" style={{color:"#ef4444"}}>⚠️ Wadaiwa</div>
+        <div className="section-sub">Wapangaji ambao muda wa kodi umekwisha</div>
       </div>
       {tenants.length===0?<Empty icon="🎉" title="Hakuna wadaiwa!" sub="Wapangaji wote wanalipa kwa wakati — hongera!"/>:
         <div className="card-list">{tenants.map(t=><DefaulterCard key={t.id} tenant={t} onSelect={()=>onSelect(t.id)} onToggleLock={()=>onToggleLock(t.id)}/>)}</div>}
@@ -471,19 +476,16 @@ function DefaultersView({tenants,onSelect,onToggleLock}){
   );
 }
 
-// ── TENANT DETAIL ─────────────────────────────────────────────────────────
-function TenantDetail({tenant,settings,onBack,onAddPayment,onEditPayment,onDeletePayment,onAddDoc,onToggleLock,onDelete}){
+function TenantDetail({tenant,settings,onBack,onEdit,onAddPayment,onEditPayment,onDeletePayment,onAddDoc,onToggleLock,onDelete}){
   const [tab,setTab]=useState("payments");
   const s=getStatus(tenant);
   const totalPaid=tenant.payments.reduce((x,p)=>x+(parseFloat(p.amount)||0),0);
   const isOverdue=s.days!==null&&s.days<0;
   const periods=getRentPeriods(tenant);
   const duration=parseInt(tenant.rentDuration)||1;
-  // Debt: periods elapsed vs periods paid
   const anchor=tenant.moveInDate||tenant.createdAt;
-  const today=new Date();
   const msPerMonth=30.44*24*60*60*1000;
-  const monthsElapsed=anchor?Math.max(0,Math.ceil((today-new Date(anchor))/msPerMonth)):0;
+  const monthsElapsed=anchor?Math.max(0,(new Date()-new Date(anchor))/msPerMonth):0;
   const periodsElapsed=Math.ceil(monthsElapsed/duration);
   const periodsPaid=tenant.payments.length;
   const periodsOwed=Math.max(0,periodsElapsed-periodsPaid);
@@ -495,64 +497,58 @@ function TenantDetail({tenant,settings,onBack,onAddPayment,onEditPayment,onDelet
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>
         Rudi
       </button>
-
       <div className="detail-header">
         <div className="detail-avatar">{tenant.name[0].toUpperCase()}</div>
         <div className="detail-info">
           <div className="detail-name">{tenant.name} {tenant.isLocked?"🔒":""}</div>
-          <div className="detail-room">Chumba {tenant.room} {tenant.email?`· ${tenant.email}`:""}</div>
+          <div className="detail-room">Chumba {tenant.room}{tenant.phone?` · ${tenant.phone}`:""}</div>
           <span className={`tag tag-${s.color}`}>{s.label}</span>
         </div>
       </div>
-
       <div className="info-grid">
-        <Chip label="📞 Simu" value={tenant.phone}/>
+        <Chip label="📞 Simu" value={tenant.phone||"—"}/>
         <Chip label="💰 Kodi/Mwezi" value={fmtTZS(tenant.rentAmount)} color="#10b981"/>
         <Chip label="📅 Alihamia" value={fmt(tenant.moveInDate)} color="#818cf8"/>
         <Chip label="✅ Imelipiwa" value={fmtTZS(totalPaid)} color="#10b981"/>
+        {tenant.email&&<Chip label="📧 Email" value={tenant.email}/>}
+        <Chip label="📋 Vipindi" value={`${periodsPaid} / ${Math.max(periodsPaid,periodsElapsed)}`}/>
       </div>
-
       {s.expiry&&(
-        <div className={`expiry-bar ${isOverdue?"eb-red":s.days<=7?"eb-amber":"eb-green"}`}>
-          <span>{isOverdue?`⚠️ Imekwisha — siku ${Math.abs(s.days)} zilizopita`:s.days===0?"⏰ Inaisha leo":`📅 Siku ${s.days} zimebaki`}</span>
-          <span style={{fontWeight:700}}>{fmt(s.expiry)}</span>
+        <div className={`expiry-bar ${isOverdue?"eb-red":s.color==="amber"?"eb-amber":s.color==="gray"?"eb-gray":"eb-green"}`}>
+          <span>{isOverdue?`⚠️ Imekwisha — siku ${Math.abs(s.days)} zilizopita`:s.days===0?"⏰ Inaisha leo":s.color==="gray"?`📅 Malipo ya kwanza inatakiwa`:`📅 Siku ${s.days} zimebaki`}</span>
+          <span style={{fontWeight:700,flexShrink:0}}>{fmt(s.expiry)}</span>
         </div>
       )}
-
       {debtAmount>0&&(
         <div className="debt-bar">
-          <span>📛 Deni: {periodsOwed} kipindi · {fmtTZS(debtAmount)}</span>
+          <span>📛 Deni: vipindi {periodsOwed} · {fmtTZS(debtAmount)}</span>
           {tenant.isLocked&&<span className="locked-badge">🔒 Imefungwa</span>}
         </div>
       )}
-
-      {/* Email buttons */}
       {tenant.email&&(
         <a href={makeTenantEmail(tenant)} className="btn-email">
           📧 Tuma {isOverdue?"Notisi ya Deni":"Ukumbusho"} kwa {tenant.name}
         </a>
       )}
-
       <div className="action-row">
         <button className="btn-primary" onClick={onAddPayment}>+ Ongeza Malipo</button>
         <button className={`btn-lock ${tenant.isLocked?"btn-lock-u":"btn-lock-l"}`} onClick={onToggleLock}>
           {tenant.isLocked?"🔓 Fungua":"🔒 Funga"}
         </button>
       </div>
-
+      <button className="btn-edit" onClick={onEdit}>✏️ Hariri Maelezo ya Mpangaji</button>
       <div className="tabs">
         <button className={`tab${tab==="payments"?" tab-active":""}`} onClick={()=>setTab("payments")}>💳 Malipo ({tenant.payments.length})</button>
-        <button className={`tab${tab==="periods"?" tab-active":""}`} onClick={()=>setTab("periods")}>📅 Vipindi ({periods.length})</button>
+        <button className={`tab${tab==="periods"?" tab-active":""}`} onClick={()=>setTab("periods")}>📅 Vipindi</button>
         <button className={`tab${tab==="docs"?" tab-active":""}`} onClick={()=>setTab("docs")}>📄 Hati ({(tenant.documents||[]).length})</button>
       </div>
-
       {tab==="payments"&&(
-        tenant.payments.length===0?<Empty icon="💳" title="Hakuna malipo" sub="Gusa 'Ongeza Malipo' kurekodi"/>:
+        tenant.payments.length===0?<Empty icon="💳" title="Hakuna malipo bado" sub="Gusa 'Ongeza Malipo' kurekodi malipo"/>:
         <div className="card-list">
           {[...tenant.payments].reverse().map((p,i)=>(
             <div key={p.id} className="payment-card">
               <div className="payment-top">
-                <div>
+                <div style={{flex:1,minWidth:0}}>
                   <div className="payment-amount">{fmtTZS(p.amount)}</div>
                   <div className="payment-date">Tarehe ya malipo: {fmt(p.date)}</div>
                   {p.notes&&<div className="payment-note">{p.notes}</div>}
@@ -560,65 +556,50 @@ function TenantDetail({tenant,settings,onBack,onAddPayment,onEditPayment,onDelet
                 <div className="payment-right">
                   {p.receiptNo&&<div className="receipt-no">#{p.receiptNo}</div>}
                   <div className="receipt-num">Malipo {tenant.payments.length-i}</div>
-                  <div style={{display:"flex",gap:4,marginTop:4}}>
-                    {p.receiptImage&&(
-                      <button className="receipt-icon-btn" onClick={()=>window.open(p.receiptImage)}>
-                        📄 Risiti
-                      </button>
-                    )}
-                    <button className="edit-pay-btn" onClick={()=>onEditPayment(p)}>✏️</button>
+                  <div style={{display:"flex",gap:4,marginTop:4,flexWrap:"wrap",justifyContent:"flex-end"}}>
+                    {p.receiptImage&&<button className="small-btn small-btn-blue" onClick={()=>window.open(p.receiptImage)}>📄 Risiti</button>}
+                    <button className="small-btn small-btn-amber" onClick={()=>onEditPayment(p)}>✏️ Edit</button>
+                    <button className="small-btn small-btn-red" onClick={()=>onDeletePayment(p.id)}>🗑️</button>
                   </div>
-                  <button onClick={()=>onDeletePayment(p.id)} style={{background:"transparent",border:"none",color:"#6b7280",fontSize:"0.7rem",cursor:"pointer",marginTop:2}}>🗑️ Futa</button>
                 </div>
               </div>
             </div>
           ))}
         </div>
       )}
-
       {tab==="periods"&&(
         <div>
-          <div style={{fontSize:"0.78rem",color:"#6b7280",marginBottom:8}}>Kila kipindi kinahesabiwa kutoka siku ya kuhamia ({fmt(tenant.moveInDate)})</div>
-          {periods.length===0?<Empty icon="📅" title="Hakuna vipindi" sub="Weka tarehe ya kuhamia kwanza"/>:
+          <div style={{fontSize:"0.75rem",color:"#6b7280",marginBottom:8}}>Kodi inahesabiwa kutoka siku ya kuhamia ({fmt(tenant.moveInDate)}). Malipo ya late hayabadilishi mzunguko.</div>
+          {periods.length===0?<Empty icon="📅" title="Weka tarehe ya kuhamia" sub="Tarehe ya kuhamia inahitajika"/>:
           periods.map(per=>(
             <div key={per.num} className="period-row">
               <span className="period-label">Kipindi {per.num}: {fmt(per.start)} – {fmt(per.end)}</span>
-              {per.payment
-                ?<span className="period-paid">✅ {fmtTZS(per.payment.amount)}</span>
-                :<span className="period-due">❌ Haijalipiwa</span>
-              }
+              {per.payment?<span className="period-paid">✅ {fmtTZS(per.payment.amount)}</span>:<span className="period-due">❌ Haijalipiwa</span>}
             </div>
           ))}
         </div>
       )}
-
       {tab==="docs"&&(
-        <div>
-          <button className="btn-ghost" style={{width:"100%",marginBottom:10}} onClick={onAddDoc}>+ Ongeza Hati</button>
+        <div style={{display:"flex",flexDirection:"column",gap:9}}>
+          <button className="btn-ghost" onClick={onAddDoc}>+ Ongeza Hati / Kitambulisho</button>
           {(tenant.documents||[]).length===0?<Empty icon="📄" title="Hakuna hati" sub="Ongeza nakala za vitambulisho"/>:
           <div className="card-list">
             {tenant.documents.map(d=>(
               <div key={d.id} className="doc-card">
                 <div className="doc-name">{d.name||"Hati"}</div>
                 {d.type&&<div className="doc-type">{d.type}</div>}
-                {d.image&&(
-                  <button className="receipt-icon-btn" style={{marginTop:4}} onClick={()=>window.open(d.image)}>
-                    🖼️ Tazama Hati
-                  </button>
-                )}
+                {d.image&&<button className="small-btn small-btn-blue" style={{marginTop:4}} onClick={()=>window.open(d.image)}>🖼️ Tazama Hati</button>}
               </div>
             ))}
           </div>}
         </div>
       )}
-
       <div className="divider"/>
       <button className="btn-delete" onClick={onDelete}>🗑️ Futa Mpangaji Huyu</button>
     </div>
   );
 }
 
-// ── CARDS ─────────────────────────────────────────────────────────────────
 function TenantCard({tenant,onClick}){
   const s=getStatus(tenant);
   const cc={green:"#10b981",amber:"#f59e0b",red:"#ef4444",gray:"#6b7280"};
@@ -652,13 +633,13 @@ function OverviewCard({tenant,onClick}){
           <div className="card-name">{tenant.name} {tenant.isLocked?"🔒":""}</div>
           <div className="card-sub">Chumba {tenant.room} · Alihamia {fmt(tenant.moveInDate)}</div>
         </div>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" style={{flexShrink:0}}><polyline points="9 18 15 12 9 6"/></svg>
       </div>
       <div className="info-grid" style={{gap:6}}>
         <Chip label="Kodi/Mwezi" value={fmtTZS(tenant.rentAmount)} color="#10b981" sm/>
         <Chip label="Malipo" value={`${tenant.payments.length} risiti`} color="#818cf8" sm/>
         <Chip label="Jumla Lilipiwa" value={fmtTZS(total)} color="#10b981" sm/>
-        <Chip label="Hali" value={s.label} color={s.color==="green"?"#10b981":s.color==="amber"?"#f59e0b":"#ef4444"} sm/>
+        <Chip label="Hali" value={s.label} color={s.color==="green"?"#10b981":s.color==="amber"?"#f59e0b":s.color==="red"?"#ef4444":"#9ca3af"} sm/>
       </div>
     </div>
   );
@@ -674,20 +655,20 @@ function DefaulterCard({tenant,onSelect,onToggleLock}){
           <div className="card-name">{tenant.name}</div>
           <div className="card-sub">Chumba {tenant.room} · {tenant.phone}</div>
         </div>
-        <span className="tag tag-red">{tenant.isLocked?"🔒 Imefungwa":`Siku ${Math.abs(s.days)}`}</span>
+        <span className="tag tag-red" style={{flexShrink:0}}>{tenant.isLocked?"🔒":""} Siku {Math.abs(s.days)}</span>
       </div>
       <div className="info-grid" style={{gap:6,marginBottom:10}}>
         <Chip label="Kodi Iliisha" value={fmt(s.expiry)} color="#ef4444" sm/>
         <Chip label="Imechelewa" value={`Siku ${Math.abs(s.days)}`} color="#ef4444" sm/>
       </div>
       {tenant.email&&(
-        <a href={makeTenantEmail(tenant)} className="btn-email" style={{marginBottom:8,fontSize:"0.85rem",padding:"10px"}}>
+        <a href={makeTenantEmail(tenant)} className="btn-email" style={{marginBottom:8,fontSize:"0.83rem",padding:"10px"}}>
           📧 Tuma Notisi kwa {tenant.name}
         </a>
       )}
       <div className="action-row">
-        <button className="btn-ghost" style={{flex:1}} onClick={onSelect}>Maelezo</button>
-        <button className={`btn-lock ${tenant.isLocked?"btn-lock-u":"btn-lock-l"}`} style={{flex:1}} onClick={onToggleLock}>
+        <button className="btn-ghost" onClick={onSelect}>Maelezo</button>
+        <button className={`btn-lock ${tenant.isLocked?"btn-lock-u":"btn-lock-l"}`} onClick={onToggleLock}>
           {tenant.isLocked?"🔓 Fungua":"🔒 Funga"}
         </button>
       </div>
@@ -695,7 +676,6 @@ function DefaulterCard({tenant,onSelect,onToggleLock}){
   );
 }
 
-// ── SMALL COMPONENTS ──────────────────────────────────────────────────────
 function Chip({label,value,color,sm}){
   return(
     <div className={`chip${sm?" chip-sm":""}`}>
@@ -729,37 +709,91 @@ function Modal({title,onClose,children}){
     </div>
   );
 }
-function Field({label,children}){return(<div className="field"><label className="field-label">{label}</label>{children}</div>)}
+function Field({label,hint,children}){
+  return(
+    <div className="field">
+      <label className="field-label">{label}</label>
+      {children}
+      {hint&&<span className="inp-hint">{hint}</span>}
+    </div>
+  );
+}
 
 // ── MODALS ────────────────────────────────────────────────────────────────
 function AddTenantModal({onAdd,onClose}){
-  const [f,setF]=useState({name:"",phone:"",email:"",room:"",rentAmount:"",rentDuration:"1",moveInDate:new Date().toISOString().split("T")[0],notes:""});
+  const today=new Date().toISOString().split("T")[0];
+  const [f,setF]=useState({name:"",phone:"",email:"",room:"",rentAmount:"",rentDuration:"1",moveInDate:today,notes:""});
   const s=(k,v)=>setF(p=>({...p,[k]:v}));
-  const submit=()=>{if(!f.name||!f.phone||!f.room||!f.rentAmount||!f.moveInDate)return alert("Jaza sehemu zote zilizo na *");onAdd(f)};
+  const submit=()=>{
+    if(!f.name.trim())return alert("Weka jina la mpangaji");
+    if(!f.phone.trim())return alert("Weka nambari ya simu");
+    if(!f.room.trim())return alert("Weka nambari ya chumba");
+    if(!f.rentAmount)return alert("Weka kiasi cha kodi");
+    if(!f.moveInDate)return alert("Weka tarehe ya kuhamia");
+    onAdd(f);
+  };
   return(
     <Modal title="➕ Sajili Mpangaji Mpya" onClose={onClose}>
-      <Field label="Jina Kamili *"><input className="inp" placeholder="John Kamau" value={f.name} onChange={e=>s("name",e.target.value)}/></Field>
+      <Field label="Jina Kamili *"><input className="inp" placeholder="Mfano: John Kamau" value={f.name} onChange={e=>s("name",e.target.value)}/></Field>
       <div className="inp-row">
-        <Field label="Simu *"><input className="inp" placeholder="0712 345 678" type="tel" value={f.phone} onChange={e=>s("phone",e.target.value)}/></Field>
+        <Field label="Simu *"><input className="inp" placeholder="0712345678" type="tel" value={f.phone} onChange={e=>s("phone",e.target.value)}/></Field>
         <Field label="Chumba *"><input className="inp" placeholder="A1" value={f.room} onChange={e=>s("room",e.target.value)}/></Field>
       </div>
-      <Field label="Email ya Mpangaji (hiari)"><input className="inp" placeholder="john@gmail.com" type="email" value={f.email} onChange={e=>s("email",e.target.value)}/></Field>
+      <Field label="Email ya Mpangaji"><input className="inp" placeholder="john@gmail.com" type="email" value={f.email} onChange={e=>s("email",e.target.value)}/></Field>
       <div className="inp-row">
         <Field label="Kodi/Mwezi (TZS) *"><input className="inp" placeholder="200000" type="number" value={f.rentAmount} onChange={e=>s("rentAmount",e.target.value)}/></Field>
-        <Field label="Muda wa Kodi *">
+        <Field label="Muda wa Kodi">
           <select className="inp" value={f.rentDuration} onChange={e=>s("rentDuration",e.target.value)}>
             {[1,2,3,6,12].map(m=><option key={m} value={m}>{m} {m===1?"Mwezi":"Miezi"}</option>)}
           </select>
         </Field>
       </div>
-      <Field label="Tarehe ya Kuhamia *">
+      <Field label="Tarehe ya Kuhamia *" hint="⚠️ Kodi itahesabiwa kutoka tarehe hii — si tarehe ya malipo">
         <input className="inp" type="date" value={f.moveInDate} onChange={e=>s("moveInDate",e.target.value)}/>
-        <span style={{fontSize:"0.72rem",color:"#6b7280",marginTop:2}}>⚠️ Muhimu: Kodi itahesabiwa kutoka tarehe hii</span>
       </Field>
-      <Field label="Maelezo (hiari)"><textarea className="inp" rows={2} style={{resize:"none"}} value={f.notes} onChange={e=>s("notes",e.target.value)}/></Field>
+      <Field label="Maelezo"><textarea className="inp" rows={2} style={{resize:"none"}} value={f.notes} onChange={e=>s("notes",e.target.value)}/></Field>
       <div className="modal-actions">
         <button className="btn-ghost" onClick={onClose}>Ghairi</button>
         <button className="btn-primary" onClick={submit}>Sajili</button>
+      </div>
+    </Modal>
+  );
+}
+
+function EditTenantModal({tenant,onSave,onClose}){
+  const [f,setF]=useState({
+    name:tenant.name||"",phone:tenant.phone||"",email:tenant.email||"",
+    room:tenant.room||"",rentAmount:tenant.rentAmount||"",
+    rentDuration:tenant.rentDuration||"1",moveInDate:tenant.moveInDate||"",notes:tenant.notes||""
+  });
+  const s=(k,v)=>setF(p=>({...p,[k]:v}));
+  const submit=()=>{
+    if(!f.name.trim())return alert("Weka jina");
+    onSave(tenant.id,f);
+  };
+  return(
+    <Modal title="✏️ Hariri Maelezo ya Mpangaji" onClose={onClose}>
+      <Field label="Jina Kamili"><input className="inp" value={f.name} onChange={e=>s("name",e.target.value)}/></Field>
+      <div className="inp-row">
+        <Field label="Simu"><input className="inp" type="tel" value={f.phone} onChange={e=>s("phone",e.target.value)}/></Field>
+        <Field label="Chumba"><input className="inp" value={f.room} onChange={e=>s("room",e.target.value)}/></Field>
+      </div>
+      <Field label="Email"><input className="inp" type="email" value={f.email} onChange={e=>s("email",e.target.value)}/></Field>
+      <div className="inp-row">
+        <Field label="Kodi/Mwezi (TZS)"><input className="inp" type="number" value={f.rentAmount} onChange={e=>s("rentAmount",e.target.value)}/></Field>
+        <Field label="Muda wa Kodi">
+          <select className="inp" value={f.rentDuration} onChange={e=>s("rentDuration",e.target.value)}>
+            {[1,2,3,6,12].map(m=><option key={m} value={m}>{m} {m===1?"Mwezi":"Miezi"}</option>)}
+          </select>
+        </Field>
+      </div>
+      <Field label="Tarehe ya Kuhamia" hint="Kubadilisha hii kutabadilisha mzunguko wote wa kodi">
+        <input className="inp" type="date" value={f.moveInDate} onChange={e=>s("moveInDate",e.target.value)}/>
+      </Field>
+      <Field label="Maelezo"><textarea className="inp" rows={2} style={{resize:"none"}} value={f.notes} onChange={e=>s("notes",e.target.value)}/></Field>
+      <div className="modal-actions">
+        <button className="btn-ghost" onClick={onClose}>Ghairi</button>
+        <button className="btn-primary" onClick={submit}>Hifadhi</button>
       </div>
     </Modal>
   );
@@ -780,11 +814,11 @@ function AddPaymentModal({ctx,onAdd,onClose}){
       <Field label="Nambari ya Risiti"><input className="inp" placeholder="RCP-001" value={f.receiptNo} onChange={e=>s("receiptNo",e.target.value)}/></Field>
       <Field label="Picha ya Risiti (hiari)">
         <label className="upload-zone">
-          {uploading?"⏳ Inapakia...":f.receiptImage?"✅ Picha imepakiwa — gusa kubadilisha":"📎 Gusa kupakia picha ya risiti"}
+          {uploading?"⏳ Inapakia...":f.receiptImage?"✅ Picha imepakiwa":"📎 Gusa kupakia picha ya risiti"}
           <input type="file" accept="image/*" onChange={handleImg} style={{display:"none"}}/>
         </label>
       </Field>
-      <Field label="Maelezo (hiari)"><input className="inp" placeholder="Kodi ya Januari 2025..." value={f.notes} onChange={e=>s("notes",e.target.value)}/></Field>
+      <Field label="Maelezo"><input className="inp" placeholder="Kodi ya Januari 2025..." value={f.notes} onChange={e=>s("notes",e.target.value)}/></Field>
       <div className="modal-actions">
         <button className="btn-ghost" onClick={onClose}>Ghairi</button>
         <button className="btn-primary" onClick={submit}>Hifadhi</button>
@@ -804,7 +838,7 @@ function EditPaymentModal({ctx,onSave,onClose}){
         <Field label="Kiasi (TZS) *"><input className="inp" type="number" value={f.amount} onChange={e=>s("amount",e.target.value)}/></Field>
         <Field label="Tarehe ya Malipo"><input className="inp" type="date" value={f.date} onChange={e=>s("date",e.target.value)}/></Field>
       </div>
-      <Field label="Nambari ya Risiti"><input className="inp" placeholder="RCP-001" value={f.receiptNo} onChange={e=>s("receiptNo",e.target.value)}/></Field>
+      <Field label="Nambari ya Risiti"><input className="inp" value={f.receiptNo} onChange={e=>s("receiptNo",e.target.value)}/></Field>
       <Field label="Maelezo"><input className="inp" value={f.notes} onChange={e=>s("notes",e.target.value)}/></Field>
       <div className="modal-actions">
         <button className="btn-ghost" onClick={onClose}>Ghairi</button>
@@ -824,7 +858,7 @@ function AddDocModal({tenantId,onAdd,onClose}){
     <Modal title="📄 Ongeza Hati" onClose={onClose}>
       <Field label="Aina ya Hati">
         <select className="inp" value={f.type} onChange={e=>s("type",e.target.value)}>
-          {["Kitambulisho cha Taifa","Cheki ya Benki","Risiti ya Malipo","Mkataba wa Kukodisha","Nyaraka Nyingine"].map(o=><option key={o}>{o}</option>)}
+          {["Kitambulisho cha Taifa","Cheki ya Benki","Risiti ya Malipo","Mkataba wa Kukodisha","Kadi ya Chuo","Nyaraka Nyingine"].map(o=><option key={o}>{o}</option>)}
         </select>
       </Field>
       <Field label="Jina la Hati"><input className="inp" placeholder="ID ya John" value={f.name} onChange={e=>s("name",e.target.value)}/></Field>
@@ -842,34 +876,38 @@ function AddDocModal({tenantId,onAdd,onClose}){
   );
 }
 
-function SettingsModal({settings,tenants,onSave,onClose}){
-  const [f,setF]=useState({ownerName:settings.ownerName||"",ownerEmail:settings.ownerEmail||""});
+function SettingsModal({settings,tenants,onSave,onReset,onClose}){
+  const [f,setF]=useState({ownerName:settings.ownerName||"",ownerEmail:settings.ownerEmail||"",ownerPhone:settings.ownerPhone||""});
   const s=(k,v)=>setF(p=>({...p,[k]:v}));
   const expiring=tenants.filter(t=>{const st=getStatus(t);return st.days!==null&&st.days<=7&&st.days>=0});
   const overdue=tenants.filter(t=>{const st=getStatus(t);return st.days!==null&&st.days<0});
   return(
     <Modal title="⚙️ Mipangilio" onClose={onClose}>
-      <div style={{fontSize:"0.8rem",color:"#6b7280",marginBottom:4}}>Weka maelezo yako kupata arifa za kodi</div>
       <Field label="Jina Lako"><input className="inp" placeholder="Jina la Mwenye Nyumba" value={f.ownerName} onChange={e=>s("ownerName",e.target.value)}/></Field>
-      <Field label="Email Yako">
+      <Field label="Nambari Yako ya Simu"><input className="inp" placeholder="0712345678" type="tel" value={f.ownerPhone} onChange={e=>s("ownerPhone",e.target.value)}/></Field>
+      <Field label="Email Yako" hint="Itatumika kupata ripoti ya wapangaji kwa email">
         <input className="inp" placeholder="wewe@gmail.com" type="email" value={f.ownerEmail} onChange={e=>s("ownerEmail",e.target.value)}/>
-        <span style={{fontSize:"0.72rem",color:"#6b7280",marginTop:2}}>Itatumika kutuma ripoti ya wapangaji kwako</span>
       </Field>
       {(expiring.length>0||overdue.length>0)&&f.ownerEmail&&(
-        <a href={makeOwnerEmail({...settings,...f},tenants)} className="btn-email" onClick={()=>{}}>
+        <a href={makeOwnerEmail({...settings,...f},tenants)} className="btn-email">
           📧 Tuma Ripoti Sasa ({expiring.length} karibu + {overdue.length} wadaiwa)
         </a>
       )}
-      <div style={{background:"#1a2234",borderRadius:10,padding:12,fontSize:"0.8rem",color:"#9ca3af"}}>
-        <div style={{fontWeight:700,color:"#f1f5f9",marginBottom:6}}>💡 Jinsi Arifa Zinavyofanya Kazi</div>
-        <div>• Browser notifications — zinafanya kazi kiotomatiki ukiwa na app wazi</div>
-        <div style={{marginTop:4}}>• Email — gusa kitufe cha "Tuma" kwenye kadi ya mpangaji au kwenye ukurasa wa Nyumbani</div>
-        <div style={{marginTop:4}}>• Email ya mpangaji — ongeza email yake wakati wa kusajili</div>
+      <div className="info-note">
+        <b>💡 Jinsi Arifa Zinavyofanya Kazi</b><br/>
+        • Browser notifications — zinafanya kazi kiotomatiki<br/>
+        • Gusa 🔔 "Arifa" juu kuziwezesha<br/>
+        • Email — gusa kitufe cha 📧 kwenye kadi ya mpangaji<br/>
+        • Weka email ya mpangaji wakati wa kusajili ili aweze kupata notisi
       </div>
       <div className="modal-actions">
         <button className="btn-ghost" onClick={onClose}>Ghairi</button>
         <button className="btn-primary" onClick={()=>onSave(f)}>Hifadhi</button>
       </div>
+      <div className="divider"/>
+      <button className="reset-btn" onClick={()=>{onClose();setTimeout(onReset,300)}}>
+        🗑️ Futa Data Yote na Anza Upya
+      </button>
     </Modal>
   );
 }
