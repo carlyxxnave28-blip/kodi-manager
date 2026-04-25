@@ -7,1097 +7,1138 @@
 <meta name="theme-color" content="#080d1a"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <title>KodiManager 🏠</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#080d1a;--card:#111827;--card2:#1a2234;--card3:#1f2937;
-  --green:#10b981;--green2:#059669;--amber:#f59e0b;--red:#ef4444;--blue:#6366f1;
-  --text:#f1f5f9;--text2:#9ca3af;--text3:#6b7280;
-  --border:#1f2937;--r:14px;
+  --bg:#080d1a;--c1:#111827;--c2:#1a2234;--c3:#1f2937;
+  --gr:#10b981;--gr2:#059669;--am:#f59e0b;--rd:#ef4444;--bl:#6366f1;
+  --tx:#f1f5f9;--tx2:#9ca3af;--tx3:#6b7280;--bdr:#1f2937;
 }
-html,body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-height:100svh;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
-input,select,textarea,button{font-family:inherit;font-size:16px}
+html,body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100svh;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
+input,select,textarea,button{font-family:inherit;-webkit-appearance:none;appearance:none}
 button{cursor:pointer}
-::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--green);border-radius:3px}
-
-/* ── LAYOUT ── */
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--gr);border-radius:3px}
 .app{min-height:100svh;display:flex;flex-direction:column}
-.topbar{position:sticky;top:0;z-index:60;background:rgba(8,13,26,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.topbar-inner{max-width:640px;margin:0 auto;padding:11px 15px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-.brand{display:flex;align-items:center;gap:10px;min-width:0}
-.brand-ico{width:36px;height:36px;min-width:36px;background:linear-gradient(135deg,var(--green),var(--green2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem}
-.brand-name{font-size:.95rem;font-weight:800}
-.brand-sub{font-size:.62rem;color:var(--text3);margin-top:1px}
-.topbar-right{display:flex;align-items:center;gap:7px;flex-shrink:0}
-.pill-saved{font-size:.62rem;font-weight:700;color:var(--green);background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);border-radius:20px;padding:3px 8px}
-.btn-icon{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text2);border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center}
-.btn-notif{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.22);color:var(--green);border-radius:8px;padding:5px 9px;font-size:.68rem;font-weight:700;white-space:nowrap}
 
-.main{flex:1;max-width:640px;width:100%;margin:0 auto;padding:13px 13px calc(90px + env(safe-area-inset-bottom))}
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:60;background:rgba(8,13,26,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr)}
+.tinner{max-width:640px;margin:0 auto;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.brand{display:flex;align-items:center;gap:9px;min-width:0}
+.bico{width:36px;height:36px;min-width:36px;background:linear-gradient(135deg,var(--gr),var(--gr2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.95rem}
+.bname{font-size:.92rem;font-weight:800}
+.bsub{font-size:.62rem;color:var(--tx3);margin-top:1px}
+.tright{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.saved-pill{font-size:.62rem;font-weight:700;color:var(--gr);background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);border-radius:20px;padding:3px 8px;display:none}
+.saved-pill.show{display:inline-block}
+.btn-ico{background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--tx2);border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.btn-notif{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.22);color:var(--gr);border-radius:8px;padding:5px 9px;font-size:.68rem;font-weight:700;white-space:nowrap}
 
-/* ── BOTTOM NAV ── */
-.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(6,10,20,.98);border-top:1px solid var(--border);display:flex;padding:7px 0 calc(7px + env(safe-area-inset-bottom));z-index:60;backdrop-filter:blur(20px)}
-.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:var(--text3);font-size:.6rem;font-weight:700;padding:3px 2px;position:relative}
-.bnav-btn.on{color:var(--green)}
-.bnav-badge{position:absolute;top:0;right:calc(50% - 18px);background:var(--red);color:#fff;border-radius:20px;padding:1px 5px;font-size:.55rem;font-weight:800;line-height:1.4}
+/* MAIN */
+.main{flex:1;max-width:640px;width:100%;margin:0 auto;padding:12px 13px calc(90px + env(safe-area-inset-bottom))}
 
-/* ── FAB ── */
-.fab{position:fixed;bottom:calc(74px + env(safe-area-inset-bottom));right:15px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--green2));border:none;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(16,185,129,.38);z-index:59;transition:transform .15s}
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(6,10,20,.98);border-top:1px solid var(--bdr);display:flex;padding:7px 0 calc(7px + env(safe-area-inset-bottom));z-index:60;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:var(--tx3);font-size:.6rem;font-weight:700;padding:3px 2px;position:relative}
+.nb.on{color:var(--gr)}
+.nb svg{transition:color .2s}
+.nb-badge{position:absolute;top:0;right:calc(50% - 18px);background:var(--rd);color:#fff;border-radius:20px;padding:1px 5px;font-size:.55rem;font-weight:800;line-height:1.4;display:none}
+.nb-badge.show{display:block}
+
+/* FAB */
+.fab{position:fixed;bottom:calc(74px + env(safe-area-inset-bottom));right:14px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--gr),var(--gr2));border:none;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 22px rgba(16,185,129,.38);z-index:59;font-size:1.5rem;line-height:1}
 .fab:active{transform:scale(.88)}
 
-/* ── VIEW ── */
-.view{display:flex;flex-direction:column;gap:12px;animation:fadeUp .22s ease}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+/* PAGE */
+.page{display:none;flex-direction:column;gap:11px;animation:fu .22s ease}
+.page.active{display:flex}
+@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── STATS ── */
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.stat-card{background:var(--card);border:1px solid var(--border);border-top:2.5px solid var(--acc,#6b7280);border-radius:var(--r);padding:13px 12px}
-.stat-ico{font-size:1.15rem;margin-bottom:4px}
-.stat-val{font-size:1.65rem;font-weight:900;color:var(--acc,#9ca3af);line-height:1}
-.stat-lbl{font-size:.68rem;color:var(--text3);font-weight:600;margin-top:2px}
+/* STATS */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.scard{background:var(--c1);border:1px solid var(--bdr);border-top:2.5px solid var(--ac);border-radius:13px;padding:12px 11px}
+.sico{font-size:1.1rem;margin-bottom:3px}
+.sval{font-size:1.6rem;font-weight:900;color:var(--ac);line-height:1}
+.slbl{font-size:.67rem;color:var(--tx3);font-weight:600;margin-top:2px}
 
-/* ── ALERT BANNER ── */
-.alert-box{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:11px 13px;display:flex;flex-direction:column;gap:5px}
-.alert-title{font-size:.8rem;font-weight:700;color:var(--amber)}
-.alert-row{font-size:.74rem;color:#d1d5db;display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
-.alert-link{background:none;border:none;color:var(--green);font-size:.7rem;font-weight:700;text-decoration:underline;padding:0}
+/* ALERT */
+.abox{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:11px 13px;display:flex;flex-direction:column;gap:5px}
+.atitle{font-size:.8rem;font-weight:700;color:var(--am)}
+.arow{font-size:.73rem;color:#d1d5db;display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
+.alink{background:none;border:none;color:var(--gr);font-size:.7rem;font-weight:700;text-decoration:underline;padding:0;cursor:pointer}
 
-/* ── SEARCH ── */
-.search{display:flex;align-items:center;gap:9px;background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:9px 13px}
-.search input{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:.88rem;min-width:0}
-.search input::placeholder{color:var(--text3)}
+/* SEARCH */
+.sbar{display:flex;align-items:center;gap:9px;background:var(--c1);border:1.5px solid var(--bdr);border-radius:12px;padding:9px 13px}
+.sbar input{flex:1;background:none;border:none;outline:none;color:var(--tx);font-size:16px;min-width:0}
+.sbar input::placeholder{color:var(--tx3)}
 
-/* ── SECTION HEAD ── */
-.sec-title{font-size:1.05rem;font-weight:700}
-.sec-sub{font-size:.7rem;color:var(--text3);margin-top:2px}
+/* SECTION */
+.stitle{font-size:1rem;font-weight:700}
+.ssub{font-size:.7rem;color:var(--tx3);margin-top:2px}
 
-/* ── CARD LIST ── */
-.card-list{display:flex;flex-direction:column;gap:8px}
-.card{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--lc,var(--border));border-radius:var(--r);padding:13px}
-.card.tap{cursor:pointer}.card.tap:active{opacity:.8}
-.card-row{display:flex;align-items:center;gap:10px}
-.card-info{flex:1;min-width:0}
-.card-name{font-weight:700;font-size:.93rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.card-sub{font-size:.7rem;color:var(--text3);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.card-dates{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:9px}
-.dbox{background:var(--card2);border-radius:9px;padding:6px 9px}
-.dbox-lbl{font-size:.6rem;color:var(--text3);margin-bottom:2px}
-.dbox-val{font-size:.78rem;font-weight:600}
-
-/* ── AVATAR ── */
+/* CARD LIST */
+.clist{display:flex;flex-direction:column;gap:8px}
+.card{background:var(--c1);border:1px solid var(--bdr);border-left:3px solid var(--lc,var(--bdr));border-radius:13px;padding:13px;cursor:pointer}
+.card:active{opacity:.8}
+.crow{display:flex;align-items:center;gap:10px}
+.cinfo{flex:1;min-width:0}
+.cname{font-weight:700;font-size:.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.csub{font-size:.7rem;color:var(--tx3);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cdates{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:9px}
+.dbox{background:var(--c2);border-radius:9px;padding:6px 9px}
+.dlbl{font-size:.6rem;color:var(--tx3);margin-bottom:2px}
+.dval{font-size:.78rem;font-weight:600}
 .av{width:40px;height:40px;min-width:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:.95rem;font-weight:800}
-
-/* ── TAGS ── */
 .tag{display:inline-flex;align-items:center;padding:3px 8px;border-radius:20px;font-size:.68rem;font-weight:700;flex-shrink:0;white-space:nowrap}
-.tag-g{background:rgba(16,185,129,.12);color:var(--green);border:1px solid rgba(16,185,129,.25)}
-.tag-a{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.25)}
-.tag-r{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.25)}
-.tag-gr{background:rgba(156,163,175,.08);color:var(--text2);border:1px solid rgba(156,163,175,.18)}
+.tg{background:rgba(16,185,129,.12);color:var(--gr);border:1px solid rgba(16,185,129,.25)}
+.ta{background:rgba(245,158,11,.12);color:var(--am);border:1px solid rgba(245,158,11,.25)}
+.tr{background:rgba(239,68,68,.12);color:var(--rd);border:1px solid rgba(239,68,68,.25)}
+.tgr{background:rgba(156,163,175,.08);color:var(--tx2);border:1px solid rgba(156,163,175,.18)}
 
-/* ── CHIPS ── */
-.chip-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.chip{background:var(--card2);border-radius:9px;padding:8px 10px}
+/* CHIPS */
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.chip{background:var(--c2);border-radius:9px;padding:8px 10px}
 .chip.sm{padding:5px 8px}
-.chip-lbl{font-size:.6rem;color:var(--text3);margin-bottom:2px}
-.chip-val{font-size:.8rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.chip.sm .chip-val{font-size:.72rem}
+.clbl{font-size:.6rem;color:var(--tx3);margin-bottom:2px}
+.cval{font-size:.8rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip.sm .cval{font-size:.72rem}
 
-/* ── DETAIL ── */
-.det-header{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:15px;display:flex;align-items:center;gap:12px}
-.det-av{width:52px;height:52px;min-width:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:900;background:linear-gradient(135deg,rgba(16,185,129,.18),rgba(5,150,105,.07));color:var(--green);border:1px solid rgba(16,185,129,.22)}
+/* DETAIL */
+.det-head{background:var(--c1);border:1px solid var(--bdr);border-radius:16px;padding:15px;display:flex;align-items:center;gap:12px}
+.det-av{width:52px;height:52px;min-width:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:900;background:linear-gradient(135deg,rgba(16,185,129,.18),rgba(5,150,105,.07));color:var(--gr);border:1px solid rgba(16,185,129,.22)}
 .det-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
 .det-name{font-size:1.05rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.det-sub{font-size:.74rem;color:var(--text3)}
+.det-sub{font-size:.74rem;color:var(--tx3)}
 
-/* ── STATUS BAR ── */
-.sbar{border-radius:10px;padding:10px 13px;display:flex;justify-content:space-between;align-items:center;font-size:.8rem;font-weight:600;gap:8px;flex-wrap:wrap}
-.sbar-g{background:rgba(16,185,129,.07);color:var(--green);border:1px solid rgba(16,185,129,.17)}
-.sbar-a{background:rgba(245,158,11,.07);color:var(--amber);border:1px solid rgba(245,158,11,.17)}
-.sbar-r{background:rgba(239,68,68,.07);color:var(--red);border:1px solid rgba(239,68,68,.17)}
-.sbar-gr{background:rgba(156,163,175,.05);color:var(--text2);border:1px solid rgba(156,163,175,.13)}
-.debt-bar{background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.13);border-radius:10px;padding:10px 13px;display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:var(--red);font-weight:600;flex-wrap:wrap;gap:5px}
+/* STATUS BAR */
+.sbar2{border-radius:10px;padding:10px 13px;display:flex;justify-content:space-between;align-items:center;font-size:.8rem;font-weight:600;gap:8px;flex-wrap:wrap}
+.sb-g{background:rgba(16,185,129,.07);color:var(--gr);border:1px solid rgba(16,185,129,.17)}
+.sb-a{background:rgba(245,158,11,.07);color:var(--am);border:1px solid rgba(245,158,11,.17)}
+.sb-r{background:rgba(239,68,68,.07);color:var(--rd);border:1px solid rgba(239,68,68,.17)}
+.sb-gr{background:rgba(156,163,175,.05);color:var(--tx2);border:1px solid rgba(156,163,175,.13)}
+.debt-bar{background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.13);border-radius:10px;padding:10px 13px;display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:var(--rd);font-weight:600;flex-wrap:wrap;gap:5px}
 
-/* ── TABS ── */
-.tabs{display:flex;background:var(--card);border-radius:12px;padding:3px;gap:3px;overflow-x:auto}
-.tab-btn{flex:1;min-width:max-content;padding:8px 7px;border-radius:9px;border:none;background:none;color:var(--text3);font-weight:600;font-size:.74rem;white-space:nowrap}
-.tab-btn.on{background:var(--card3);color:var(--green)}
+/* TABS */
+.tabs{display:flex;background:var(--c1);border-radius:12px;padding:3px;gap:3px;overflow-x:auto}
+.tbt{flex:1;min-width:max-content;padding:8px 6px;border-radius:9px;border:none;background:none;color:var(--tx3);font-weight:600;font-size:.73rem;white-space:nowrap}
+.tbt.on{background:var(--c3);color:var(--gr)}
+.tab-pane{display:none;flex-direction:column;gap:8px}
+.tab-pane.active{display:flex}
 
-/* ── PAYMENT CARD ── */
-.pay-card{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:13px;padding:12px}
-.pay-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
-.pay-amt{font-size:.98rem;font-weight:700;color:var(--green)}
-.pay-date{font-size:.72rem;color:var(--text3);margin-top:2px}
-.pay-note{font-size:.72rem;color:var(--text2);margin-top:3px;font-style:italic}
-.pay-right{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
-.pay-rno{font-size:.68rem;background:rgba(16,185,129,.1);color:var(--green);padding:2px 6px;border-radius:5px;font-weight:600}
-.pay-num{font-size:.64rem;color:var(--text3)}
-.pay-actions{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;justify-content:flex-end}
-.pay-period{font-size:.7rem;color:var(--text2);margin-top:4px;background:var(--card2);border-radius:6px;padding:3px 7px;display:inline-block}
+/* PAYMENT CARD */
+.pcard{background:var(--c1);border:1px solid var(--bdr);border-left:3px solid var(--gr);border-radius:13px;padding:12px}
+.ptop{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.pamt{font-size:.98rem;font-weight:700;color:var(--gr)}
+.pdate{font-size:.72rem;color:var(--tx3);margin-top:2px}
+.pnote{font-size:.72rem;color:var(--tx2);margin-top:3px;font-style:italic}
+.prno{font-size:.68rem;background:rgba(16,185,129,.1);color:var(--gr);padding:2px 6px;border-radius:5px;font-weight:600;display:inline-block;margin-top:3px}
+.pright{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+.pnum{font-size:.64rem;color:var(--tx3)}
+.pacts{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;justify-content:flex-end}
+.sbtn{border-radius:7px;padding:4px 8px;font-size:.68rem;font-weight:700;border:1px solid;background:none;cursor:pointer}
+.sbt-b{color:var(--bl);border-color:rgba(99,102,241,.3)}
+.sbt-a{color:var(--am);border-color:rgba(245,158,11,.3)}
+.sbt-r{color:var(--rd);border-color:rgba(239,68,68,.22)}
 
-/* ── SMALL BTNS ── */
-.sbtn{border-radius:7px;padding:3px 8px;font-size:.68rem;font-weight:700;border:1px solid;background:none}
-.sbtn-b{color:var(--blue);border-color:rgba(99,102,241,.3)}
-.sbtn-a{color:var(--amber);border-color:rgba(245,158,11,.3)}
-.sbtn-r{color:var(--red);border-color:rgba(239,68,68,.22)}
-
-/* ── DOC CARD ── */
-.doc-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:12px}
+/* DOC CARD */
+.doccard{background:var(--c1);border:1px solid var(--bdr);border-radius:13px;padding:12px}
 .doc-name{font-weight:600;font-size:.9rem;margin-bottom:3px}
-.doc-type{font-size:.7rem;color:var(--text3);margin-bottom:7px}
+.doc-type{font-size:.7rem;color:var(--tx3);margin-bottom:7px}
 
-/* ── PERIOD ROW ── */
-.period-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--card2);font-size:.78rem;flex-wrap:wrap;gap:4px}
-.period-lbl{color:var(--text3);font-size:.7rem}
-.period-ok{color:var(--green);font-weight:700}
-.period-no{color:var(--red);font-weight:700}
+/* PERIOD ROW */
+.prow{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--c2);font-size:.78rem;flex-wrap:wrap;gap:4px}
+.plbl{color:var(--tx3);font-size:.7rem}
+.pok{color:var(--gr);font-weight:700}
 
-/* ── BUTTONS ── */
-.btn{border:none;border-radius:11px;padding:12px 16px;font-weight:700;font-size:.9rem;text-align:center;width:100%;display:block}
-.btn-green{background:linear-gradient(135deg,var(--green),var(--green2));color:#fff}
-.btn-green:active{opacity:.85}
-.btn-ghost{background:none;border:1.5px solid var(--card3);color:var(--text2)}
-.btn-amber{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.22);color:var(--amber)}
-.btn-red{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.22);color:var(--red)}
-.btn-lock{background:rgba(239,68,68,.08);border:none;color:var(--red)}
-.btn-unlock{background:rgba(16,185,129,.08);border:none;color:var(--green)}
-.btn-email{background:rgba(16,185,129,.07);border:1.5px solid rgba(16,185,129,.2);color:var(--green);font-weight:700;font-size:.85rem;text-decoration:none}
-.btn-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.back-btn{display:flex;align-items:center;gap:5px;background:none;border:none;color:var(--green);font-weight:700;font-size:.88rem;padding:0;margin-bottom:4px}
-.divider{height:1px;background:var(--border);margin:4px 0}
+/* BUTTONS */
+.btn{border:none;border-radius:11px;padding:12px 16px;font-weight:700;font-size:16px;text-align:center;width:100%;display:block;cursor:pointer}
+.btn-g{background:linear-gradient(135deg,var(--gr),var(--gr2));color:#fff}
+.btn-g:active{opacity:.85}
+.btn-gh{background:none;border:1.5px solid var(--c3);color:var(--tx2)}
+.btn-am{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.22);color:var(--am)}
+.btn-rd{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.22);color:var(--rd)}
+.btn-lk{background:rgba(239,68,68,.08);border:none;color:var(--rd)}
+.btn-ul{background:rgba(16,185,129,.08);border:none;color:var(--gr)}
+.btn-em{background:rgba(16,185,129,.07);border:1.5px solid rgba(16,185,129,.2);color:var(--gr);font-weight:700;font-size:.85rem;text-decoration:none;display:block;text-align:center}
+.b2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.back-btn{display:flex;align-items:center;gap:5px;background:none;border:none;color:var(--gr);font-weight:700;font-size:.88rem;padding:0;margin-bottom:4px;cursor:pointer}
+.divider{height:1px;background:var(--bdr);margin:4px 0}
 
-/* ── EMPTY ── */
-.empty{text-align:center;padding:40px 16px;color:var(--text3)}
-.empty-ico{font-size:2.5rem;margin-bottom:10px}
-.empty-t{font-weight:700;font-size:.95rem;color:var(--text2);margin-bottom:5px}
-.empty-s{font-size:.78rem}
+/* EMPTY */
+.empty{text-align:center;padding:40px 16px;color:var(--tx3)}
+.eico{font-size:2.5rem;margin-bottom:10px}
+.et{font-weight:700;font-size:.95rem;color:var(--tx2);margin-bottom:5px}
+.es{font-size:.78rem}
 
-/* ── MODAL ── */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:100;display:flex;align-items:flex-end;justify-content:center}
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:100;display:none;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
 @media(min-width:560px){.overlay{align-items:center;padding:16px}}
-.modal{background:#0c1422;border:1px solid var(--border);border-radius:20px 20px 0 0;width:100%;max-width:500px;padding:18px;padding-bottom:calc(18px + env(safe-area-inset-bottom));max-height:93svh;overflow-y:auto;display:flex;flex-direction:column;gap:10px;animation:mup .22s ease}
+.modal{background:#0c1422;border:1px solid var(--bdr);border-radius:20px 20px 0 0;width:100%;max-width:500px;padding:18px;padding-bottom:calc(18px + env(safe-area-inset-bottom));max-height:93svh;overflow-y:auto;display:flex;flex-direction:column;gap:10px;animation:mup .22s ease}
 @keyframes mup{from{transform:translateY(18px);opacity:0}to{transform:translateY(0);opacity:1}}
 @media(min-width:560px){.modal{border-radius:18px;padding-bottom:18px}}
-.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
-.modal-title{font-size:1rem;font-weight:800}
-.x-btn{background:var(--card3);border:none;color:var(--text2);border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
-.m-2col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:3px}
+.mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+.mt{font-size:1rem;font-weight:800}
+.xb{background:var(--c3);border:none;color:var(--tx2);border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer}
+.m2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:3px}
 
-/* ── FIELDS ── */
+/* FIELDS */
 .field{display:flex;flex-direction:column;gap:4px}
-.f-lbl{font-size:.72rem;color:var(--text2);font-weight:600}
-.f-hint{font-size:.64rem;color:var(--text3);margin-top:2px}
-.inp{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:11px 12px;color:var(--text);font-size:.9rem!important;outline:none;width:100%;transition:border-color .18s;-webkit-appearance:none}
-.inp:focus{border-color:var(--green)}
-.inp-2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.uzone{display:block;background:var(--card2);border:1.5px dashed var(--card3);border-radius:10px;padding:15px;text-align:center;color:var(--text3);font-size:.82rem;transition:border-color .18s}
-.uzone.ok{border-color:rgba(16,185,129,.4);color:var(--green)}
+.fl{font-size:.72rem;color:var(--tx2);font-weight:600}
+.fh{font-size:.64rem;color:var(--tx3);margin-top:2px}
+.inp{background:var(--c2);border:1.5px solid var(--bdr);border-radius:10px;padding:11px 12px;color:var(--tx);font-size:16px!important;outline:none;width:100%;transition:border-color .18s}
+.inp:focus{border-color:var(--gr)}
+.i2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.uzone{display:block;background:var(--c2);border:1.5px dashed var(--c3);border-radius:10px;padding:15px;text-align:center;color:var(--tx3);font-size:.82rem;transition:border-color .18s;cursor:pointer}
+.uzone.ok{border-color:rgba(16,185,129,.4);color:var(--gr)}
 
-/* ── TOAST ── */
-.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);padding:9px 16px;border-radius:11px;z-index:200;font-weight:700;font-size:.82rem;box-shadow:0 4px 18px rgba(0,0,0,.5);white-space:nowrap;max-width:93vw;text-align:center;animation:td .25s ease}
+/* TOAST */
+.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);padding:9px 16px;border-radius:11px;z-index:200;font-weight:700;font-size:.82rem;box-shadow:0 4px 18px rgba(0,0,0,.5);white-space:nowrap;max-width:93vw;text-align:center;display:none}
+.toast.show{display:block;animation:td .25s ease}
 @keyframes td{from{transform:translateX(-50%) translateY(-10px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
-.toast-ok{background:#064e3b;color:#6ee7b7;border:1px solid rgba(16,185,129,.25)}
-.toast-err{background:#7f1d1d;color:#fca5a5;border:1px solid rgba(239,68,68,.25)}
+.tok{background:#064e3b;color:#6ee7b7;border:1px solid rgba(16,185,129,.25)}
+.terr{background:#7f1d1d;color:#fca5a5;border:1px solid rgba(239,68,68,.25)}
 
-/* ── SETTINGS ── */
-.sto-bar{background:var(--card2);border-radius:9px;padding:9px 11px;font-size:.72rem;color:var(--text3);display:flex;justify-content:space-between;align-items:center}
-.info-note{background:var(--card2);border-radius:10px;padding:11px;font-size:.74rem;color:var(--text3);line-height:1.75}
-.info-note b{color:var(--text)}
+/* SETTINGS */
+.stobar{background:var(--c2);border-radius:9px;padding:9px 11px;font-size:.72rem;color:var(--tx3);display:flex;justify-content:space-between;align-items:center}
+.inote{background:var(--c2);border-radius:10px;padding:11px;font-size:.74rem;color:var(--tx3);line-height:1.75}
+.inote b{color:var(--tx)}
 </style>
 </head>
 <body>
-<div id="root"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
-<script type="text/babel">
-const {useState,useEffect,useCallback}=React;
-
-/* ════════════════════════════════════════════════════════════
-   UTILITIES
-════════════════════════════════════════════════════════════ */
-const fmt = d => d ? new Date(d).toLocaleDateString("en-TZ",{day:"2-digit",month:"short",year:"numeric"}) : "—";
-const tzs = n => n ? `TZS ${Number(n).toLocaleString()}` : "TZS 0";
-const today = () => { const d=new Date(); d.setHours(0,0,0,0); return d; };
-const daysTo = dateStr => {
-  if(!dateStr) return null;
-  const t=today(), e=new Date(dateStr); e.setHours(0,0,0,0);
-  return Math.floor((e-t)/86400000);
-};
-const addMonths = (dateStr, n) => {
-  const d = new Date(dateStr);
-  d.setMonth(d.getMonth() + parseInt(n));
-  return d;
-};
-const compressImg = (file, maxW=450, q=0.55) => new Promise((res,rej) => {
-  const img=new Image(), url=URL.createObjectURL(file);
-  img.onload=()=>{
-    const r=Math.min(maxW/img.width,1);
-    const c=document.createElement('canvas');
-    c.width=img.width*r; c.height=img.height*r;
-    c.getContext('2d').drawImage(img,0,0,c.width,c.height);
-    URL.revokeObjectURL(url);
-    res(c.toDataURL('image/jpeg',q));
-  };
-  img.onerror=rej; img.src=url;
-});
-
-/* ════════════════════════════════════════════════════════════
-   RENT CALCULATION LOGIC
-   - Kodi inahesabiwa kutoka siku ya kuhamia (moveInDate)
-   - Kila payment inafunika rentDuration miezi
-   - Expiry ya kipindi kinachofuata inaanza kutoka expiry ya kipindi kilichopita
-   - Kodi ya kwanza: kutoka moveInDate hadi moveInDate + duration
-   - Baada ya kulipa: expiry inaendelea kutoka pale ilipokuwa imeisha
-════════════════════════════════════════════════════════════ */
-const calcExpiry = (tenant) => {
-  const { moveInDate, rentAmount, payments=[], rentDuration=1 } = tenant;
-  if(!moveInDate) return null;
-  const dur = parseInt(rentDuration) || 1;
-  const amt = parseFloat(rentAmount) || 0;
-  if(amt <= 0) return null;
-
-  // Total months covered by all payments
-  let totalMonthsCovered = 0;
-  payments.forEach(p => {
-    const paid = parseFloat(p.amount) || 0;
-    const months = amt > 0 ? paid / amt * dur : 0;
-    totalMonthsCovered += months;
-  });
-
-  // Expiry = moveInDate + totalMonthsCovered months
-  const expiry = addMonths(moveInDate, Math.round(totalMonthsCovered));
-  return expiry;
-};
-
-const getStatus = (tenant) => {
-  const expiry = calcExpiry(tenant);
-  const hasPaid = (tenant.payments||[]).length > 0;
-
-  if(!expiry) {
-    // No payments yet — first due date = moveInDate + duration
-    const firstDue = addMonths(tenant.moveInDate, parseInt(tenant.rentDuration)||1);
-    const days = daysTo(firstDue);
-    if(tenant.isLocked) return {label:"Imefungwa",color:"r",days,expiry:firstDue};
-    if(days < 0) return {label:"Hajalipa (Deni)",color:"r",days,expiry:firstDue};
-    if(days <= 7) return {label:"Lipa Hivi Karibuni",color:"a",days,expiry:firstDue};
-    return {label:"Hajalipa",color:"gr",days,expiry:firstDue};
-  }
-
-  const days = daysTo(expiry);
-  if(tenant.isLocked) return {label:"Imefungwa",color:"r",days,expiry};
-  if(days < 0) return {label:"Imedaiwa",color:"r",days,expiry};
-  if(days <= 7) return {label:"Karibu Kwisha",color:"a",days,expiry};
-  return {label:"Imelipiwa",color:"g",days,expiry};
-};
-
-// Calculate payment periods for history tab
-const getPeriods = (tenant) => {
-  const { moveInDate, rentAmount, payments=[], rentDuration=1 } = tenant;
-  if(!moveInDate || !rentAmount) return [];
-  const dur = parseInt(rentDuration)||1;
-  const amt = parseFloat(rentAmount)||0;
-  const periods = [];
-  let cursor = new Date(moveInDate);
-  payments.forEach((p,i) => {
-    const paid = parseFloat(p.amount)||0;
-    const months = amt > 0 ? Math.round(paid/amt*dur) : dur;
-    const end = addMonths(cursor.toISOString(), months);
-    periods.push({ num:i+1, start:new Date(cursor), end, payment:p, months });
-    cursor = new Date(end);
-  });
-  return periods;
-};
-
-/* ════════════════════════════════════════════════════════════
-   STORAGE
-════════════════════════════════════════════════════════════ */
-const DATA_KEY = "kodi_mgr_v1";
-const CFG_KEY  = "kodi_cfg_v1";
-
-const loadData    = () => { try{ return JSON.parse(localStorage.getItem(DATA_KEY)||"[]") }catch{ return [] } };
-const loadCfg     = () => { try{ return JSON.parse(localStorage.getItem(CFG_KEY)||"{}") }catch{ return {} } };
-const saveCfgRaw  = c => { try{ localStorage.setItem(CFG_KEY, JSON.stringify(c)) }catch{} };
-
-const saveData = (arr) => {
-  try{
-    localStorage.setItem(DATA_KEY, JSON.stringify(arr));
-    return "ok";
-  } catch(e) {
-    if(e.name==="QuotaExceededError") {
-      // Retry without images
-      try{
-        const stripped = arr.map(t=>({...t,
-          payments: t.payments.map(p=>({...p,receiptImage:null})),
-          documents: (t.documents||[]).map(d=>({...d,image:null}))
-        }));
-        localStorage.setItem(DATA_KEY, JSON.stringify(stripped));
-        return "noimages";
-      } catch{ return "fail"; }
-    }
-    return "fail";
-  }
-};
-
-/* ════════════════════════════════════════════════════════════
-   EMAIL HELPERS
-════════════════════════════════════════════════════════════ */
-const makeTenantEmail = (t, cfg) => {
-  const s = getStatus(t);
-  const over = s.days < 0;
-  const sub = over ? `Kodi Imedaiwa — Chumba ${t.room}` : `Ukumbusho wa Kodi — Chumba ${t.room}`;
-  const ownerLine = cfg.ownerPhone ? `\nMawasiliano ya Mwenye Nyumba: ${cfg.ownerPhone}` : "";
-  const body = over
-    ? `Habari ${t.name},\n\nKodi yako ya Chumba ${t.room} imekwisha tangu ${fmt(s.expiry)} (imechelewa siku ${Math.abs(s.days)}).\n\nKiasi cha kodi: ${tzs(t.rentAmount)} kwa mwezi.\n\nTafadhali lipa haraka iwezekanavyo.${ownerLine}\n\nAsante.`
-    : `Habari ${t.name},\n\nHii ni ukumbusho — kodi yako ya Chumba ${t.room} itakwisha tarehe ${fmt(s.expiry)} (baada ya siku ${s.days}).\n\nKiasi cha kodi: ${tzs(t.rentAmount)} kwa mwezi.\n\nTafadhali jitayarishe kulipa.${ownerLine}\n\nAsante.`;
-  return `mailto:${t.email||""}?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body)}`;
-};
-
-const makeOwnerEmail = (cfg, tenants) => {
-  const exp = tenants.filter(t=>{ const s=getStatus(t); return s.days!==null&&s.days<=7&&s.days>=0; });
-  const owe = tenants.filter(t=>{ const s=getStatus(t); return s.days!==null&&s.days<0; });
-  const lines = [
-    `KodiManager — Ripoti ya Kodi\n`,
-    exp.length ? `⚠️ KARIBU KWISHA (${exp.length}):` : null,
-    ...exp.map(t=>{ const s=getStatus(t); return `  • ${t.name}, Chumba ${t.room} — inaisha ${fmt(s.expiry)} (siku ${s.days})`; }),
-    owe.length ? `\n🔴 WADAIWA (${owe.length}):` : null,
-    ...owe.map(t=>{ const s=getStatus(t); return `  • ${t.name}, Chumba ${t.room} — imechelewa siku ${Math.abs(s.days)}`; }),
-  ].filter(Boolean).join("\n");
-  return `mailto:${cfg.ownerEmail||""}?subject=${encodeURIComponent("KodiManager — Ripoti")}&body=${encodeURIComponent(lines)}`;
-};
-
-/* ════════════════════════════════════════════════════════════
-   ROOT APP
-════════════════════════════════════════════════════════════ */
-function App() {
-  const [tenants, setTenants] = useState(() => loadData());
-  const [cfg, setCfg]         = useState(() => loadCfg());
-  const [view, setView]       = useState("home");
-  const [selId, setSelId]     = useState(null);
-  const [modal, setModal]     = useState(null);
-  const [mCtx, setMCtx]       = useState(null);
-  const [notifPerm, setNotifPerm] = useState("default");
-  const [toast, setToast]     = useState(null);
-  const [query, setQuery]     = useState("");
-  const [saved, setSaved]     = useState(false);
-
-  useEffect(()=>{ if("Notification" in window) setNotifPerm(Notification.permission); },[]);
-
-  const toast$ = (msg, type="ok") => { setToast({msg,type}); setTimeout(()=>setToast(null), 3200); };
-
-  const save = useCallback((arr) => {
-    setTenants(arr);
-    const r = saveData(arr);
-    if(r==="ok")       { setSaved(true); setTimeout(()=>setSaved(false),2500); }
-    else if(r==="noimages") { toast$("⚠️ Imehifadhiwa bila picha — nafasi imejaa","err"); setSaved(true); setTimeout(()=>setSaved(false),2500); }
-    else                    { toast$("❌ Kuhifadhi kumeshindwa!","err"); }
-  },[]);
-
-  const saveCfgFn = c => { setCfg(c); saveCfgRaw(c); };
-
-  // Auto-lock if >7 days overdue
-  useEffect(()=>{
-    if(!tenants.length) return;
-    let changed = false;
-    const updated = tenants.map(t => {
-      const s = getStatus(t);
-      if(s.days !== null && s.days < -7 && !t.isLocked) { changed=true; return {...t,isLocked:true}; }
-      return t;
-    });
-    if(changed) save(updated);
-  });
-
-  // Browser notifications (7 days warning)
-  useEffect(()=>{
-    if(notifPerm!=="granted" || !tenants.length) return;
-    const seen = JSON.parse(localStorage.getItem("kodi_notif_v2")||"{}");
-    const todayStr = new Date().toDateString();
-    tenants.forEach(t => {
-      const s = getStatus(t);
-      if(s.days!==null && s.days<=7 && s.days>=0 && seen[t.id]!==todayStr) {
-        new Notification(`🏠 KodiManager: ${t.name}`, {
-          body: `Kodi ya Chumba ${t.room} inaisha ${s.days===0?"LEO":`baada ya siku ${s.days}`} — ${fmt(s.expiry)}`
-        });
-        seen[t.id] = todayStr;
-      }
-    });
-    localStorage.setItem("kodi_notif_v2", JSON.stringify(seen));
-  },[tenants,notifPerm]);
-
-  /* ── CRUD ── */
-  const addTenant = d => {
-    const t = { id:Date.now().toString(), ...d, payments:[], documents:[], isLocked:false, createdAt:new Date().toISOString() };
-    save([...tenants,t]); setModal(null); toast$(`✅ ${d.name} amesajiliwa!`);
-  };
-  const editTenant = (id,d) => { save(tenants.map(t=>t.id===id?{...t,...d}:t)); setModal(null); toast$("✅ Maelezo yamesasishwa!"); };
-  const addPayment = (tid,d) => {
-    save(tenants.map(t=>t.id===tid?{...t,payments:[...t.payments,{id:Date.now().toString(),...d}]}:t));
-    setModal(null); toast$("✅ Malipo yamehifadhiwa!");
-  };
-  const editPayment = (tid,pid,d) => {
-    save(tenants.map(t=>t.id===tid?{...t,payments:t.payments.map(p=>p.id===pid?{...p,...d}:p)}:t));
-    setModal(null); toast$("✅ Malipo yamesasishwa!");
-  };
-  const deletePayment = (tid,pid) => {
-    if(!confirm("Futa malipo haya?")) return;
-    save(tenants.map(t=>t.id===tid?{...t,payments:t.payments.filter(p=>p.id!==pid)}:t));
-    toast$("Malipo yamefutwa","err");
-  };
-  const addDoc = (tid,d) => {
-    save(tenants.map(t=>t.id===tid?{...t,documents:[...(t.documents||[]),{id:Date.now().toString(),...d}]}:t));
-    setModal(null); toast$("✅ Hati imehifadhiwa!");
-  };
-  const toggleLock = tid => save(tenants.map(t=>t.id===tid?{...t,isLocked:!t.isLocked}:t));
-  const deleteTenant = tid => {
-    if(!confirm("Futa mpangaji huyu kabisa? Haiwezi kurudishwa.")) return;
-    save(tenants.filter(t=>t.id!==tid)); setSelId(null); toast$("Mpangaji amefutwa","err");
-  };
-  const resetAll = () => {
-    if(!confirm("Futa DATA YOTE? Haiwezi kurudishwa.")) return;
-    if(!confirm("Thibitisha — futa data yote?")) return;
-    localStorage.removeItem(DATA_KEY);
-    setTenants([]); setSelId(null); setView("home"); setModal(null); toast$("Data yote imefutwa","err");
-  };
-
-  const selected   = tenants.find(t=>t.id===selId);
-  const defaulters = tenants.filter(t=>{ const s=getStatus(t); return s.days!==null&&s.days<0; });
-  const expiring   = tenants.filter(t=>{ const s=getStatus(t); return s.days!==null&&s.days<=7&&s.days>=0; });
-  const filtered   = tenants.filter(t=>
-    t.name.toLowerCase().includes(query.toLowerCase()) ||
-    t.room.toLowerCase().includes(query.toLowerCase())
-  );
-
-  return (<>
-    {toast && <div className={`toast ${toast.type==="err"?"toast-err":"toast-ok"}`}>{toast.msg}</div>}
-    <div className="app">
-
-      {/* TOP BAR */}
-      <div className="topbar">
-        <div className="topbar-inner">
-          <div className="brand">
-            <div className="brand-ico">🏠</div>
-            <div>
-              <div className="brand-name">KodiManager</div>
-              <div className="brand-sub">{tenants.length} wapangaji · {defaulters.length} wadaiwa</div>
-            </div>
-          </div>
-          <div className="topbar-right">
-            {saved && <div className="pill-saved">✅ Imehifadhiwa</div>}
-            {notifPerm!=="granted" && (
-              <button className="btn-notif" onClick={async()=>{
-                if("Notification" in window) setNotifPerm(await Notification.requestPermission());
-              }}>🔔 Arifa</button>
-            )}
-            <button className="btn-icon" onClick={()=>setModal("cfg")}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06-.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            </button>
-          </div>
+<div class="app">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="tinner">
+      <div class="brand">
+        <div class="bico">🏠</div>
+        <div>
+          <div class="bname">KodiManager</div>
+          <div class="bsub" id="brand-sub">0 wapangaji · 0 wadaiwa</div>
         </div>
       </div>
-
-      {/* MAIN */}
-      <div className="main">
-        {selected ? (
-          <TenantDetail
-            tenant={selected} cfg={cfg}
-            onBack={()=>setSelId(null)}
-            onEdit={()=>{ setMCtx(selected); setModal("editT"); }}
-            onAddPayment={()=>{ setMCtx({tid:selected.id}); setModal("addP"); }}
-            onEditPayment={p=>{ setMCtx({tid:selected.id,pay:p}); setModal("editP"); }}
-            onDeletePayment={pid=>deletePayment(selected.id,pid)}
-            onAddDoc={()=>{ setMCtx(selected.id); setModal("addD"); }}
-            onToggleLock={()=>toggleLock(selected.id)}
-            onDelete={()=>deleteTenant(selected.id)}
-          />
-        ) : view==="home" ? (
-          <HomeView tenants={filtered} all={tenants} expiring={expiring} query={query} setQuery={setQuery} onSelect={setSelId} cfg={cfg}/>
-        ) : view==="ov" ? (
-          <OverView tenants={filtered} query={query} setQuery={setQuery} onSelect={setSelId}/>
-        ) : (
-          <DefView tenants={defaulters} onSelect={setSelId} onToggleLock={toggleLock}/>
-        )}
+      <div class="tright">
+        <div class="saved-pill" id="saved-pill">✅ Imehifadhiwa</div>
+        <button class="btn-notif" id="notif-btn" onclick="enableNotif()" style="display:none">🔔 Arifa</button>
+        <button class="btn-ico" onclick="openModal('cfg')">⚙️</button>
       </div>
+    </div>
+  </div>
 
-      {/* FAB */}
-      {!selected && (
-        <button className="fab" onClick={()=>setModal("addT")}>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        </button>
-      )}
-
-      {/* BOTTOM NAV */}
-      {!selected && (
-        <div className="bnav">
-          <button className={`bnav-btn${view==="home"?" on":""}`} onClick={()=>setView("home")}>
-            <svg width="21" height="21" viewBox="0 0 24 24" fill={view==="home"?"#10b981":"none"} stroke={view==="home"?"#10b981":"#6b7280"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            <span>Nyumbani</span>
-          </button>
-          <button className={`bnav-btn${view==="ov"?" on":""}`} onClick={()=>setView("ov")}>
-            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke={view==="ov"?"#10b981":"#6b7280"} strokeWidth="2" strokeLinecap="round"><rect x="2" y="7" width="4" height="15"/><rect x="10" y="3" width="4" height="19"/><rect x="18" y="11" width="4" height="11"/></svg>
-            <span>Maelezo</span>
-          </button>
-          <button className={`bnav-btn${view==="def"?" on":""}`} onClick={()=>setView("def")}>
-            {defaulters.length>0 && <span className="bnav-badge">{defaulters.length}</span>}
-            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke={view==="def"?"#ef4444":"#6b7280"} strokeWidth="2" strokeLinecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-            <span>Wadaiwa</span>
-          </button>
-        </div>
-      )}
+  <!-- MAIN CONTENT -->
+  <div class="main">
+    <!-- HOME PAGE -->
+    <div class="page active" id="page-home">
+      <div class="sgrid">
+        <div class="scard" style="--ac:#10b981"><div class="sico">✅</div><div class="sval" id="stat-paying">0</div><div class="slbl">Wanaolipa</div></div>
+        <div class="scard" style="--ac:#f59e0b"><div class="sico">⚠️</div><div class="sval" id="stat-soon">0</div><div class="slbl">Karibu Kwisha</div></div>
+        <div class="scard" style="--ac:#ef4444"><div class="sico">🔴</div><div class="sval" id="stat-owed">0</div><div class="slbl">Wadaiwa</div></div>
+        <div class="scard" style="--ac:#818cf8"><div class="sico">👥</div><div class="sval" id="stat-all">0</div><div class="slbl">Wapangaji</div></div>
+      </div>
+      <div class="abox" id="alert-box" style="display:none"></div>
+      <div class="sbar">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="search-home" placeholder="Tafuta jina au chumba..." oninput="renderHome()"/>
+      </div>
+      <div><div class="stitle">Wapangaji Wote</div><div class="ssub">Gusa kadi kuona maelezo · Data inasave kiotomatiki ✅</div></div>
+      <div class="clist" id="home-list"></div>
     </div>
 
-    {/* MODALS */}
-    {modal==="addT"  && <AddTenantModal onAdd={addTenant} onClose={()=>setModal(null)}/>}
-    {modal==="editT" && <EditTenantModal tenant={mCtx} onSave={editTenant} onClose={()=>setModal(null)}/>}
-    {modal==="addP"  && <AddPaymentModal ctx={mCtx} onAdd={addPayment} onClose={()=>setModal(null)}/>}
-    {modal==="editP" && <EditPaymentModal ctx={mCtx} onSave={editPayment} onClose={()=>setModal(null)}/>}
-    {modal==="addD"  && <AddDocModal tid={mCtx} onAdd={addDoc} onClose={()=>setModal(null)}/>}
-    {modal==="cfg"   && <CfgModal cfg={cfg} tenants={tenants} onSave={c=>{saveCfgFn(c);setModal(null);toast$("✅ Mipangilio imehifadhiwa!");}} onReset={()=>{setModal(null);setTimeout(resetAll,300);}} onClose={()=>setModal(null)}/>}
-  </>);
-}
-
-/* ════════════════════════════════════════════════════════════
-   HOME VIEW
-════════════════════════════════════════════════════════════ */
-function HomeView({tenants,all,expiring,query,setQuery,onSelect,cfg}){
-  const stats = [
-    {l:"Wanaolipa",  v:all.filter(t=>getStatus(t).color==="g").length, c:"#10b981", i:"✅"},
-    {l:"Karibu Kwisha",v:all.filter(t=>getStatus(t).color==="a").length, c:"#f59e0b", i:"⚠️"},
-    {l:"Wadaiwa",    v:all.filter(t=>getStatus(t).color==="r").length, c:"#ef4444", i:"🔴"},
-    {l:"Wapangaji",  v:all.length, c:"#818cf8", i:"👥"},
-  ];
-  return(
-    <div className="view">
-      <div className="stat-grid">
-        {stats.map(s=>(
-          <div key={s.l} className="stat-card" style={{"--acc":s.c}}>
-            <div className="stat-ico">{s.i}</div>
-            <div className="stat-val">{s.v}</div>
-            <div className="stat-lbl">{s.l}</div>
-          </div>
-        ))}
+    <!-- OVERVIEW PAGE -->
+    <div class="page" id="page-ov">
+      <div><div class="stitle">Maelezo ya Wote</div><div class="ssub">Rekodi kamili ya kila mpangaji</div></div>
+      <div class="sbar">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="search-ov" placeholder="Tafuta mpangaji..." oninput="renderOv()"/>
       </div>
-
-      {expiring.length>0 && (
-        <div className="alert-box">
-          <div className="alert-title">⚠️ Kodi Karibu Kwisha — Wapangaji {expiring.length}</div>
-          {expiring.map(t=>{
-            const s=getStatus(t);
-            return(
-              <div key={t.id} className="alert-row">
-                <span>{t.name} (Chumba {t.room}) — siku {s.days} zimebaki</span>
-                {t.email && cfg && <button className="alert-link" onClick={()=>window.open(makeTenantEmail(t,cfg))}>📧 Tuma arifa</button>}
-              </div>
-            );
-          })}
-          {cfg?.ownerEmail && (
-            <button className="alert-link" style={{marginTop:4,textAlign:"left"}} onClick={()=>window.open(makeOwnerEmail(cfg,all))}>
-              📧 Tuma ripoti kwangu
-            </button>
-          )}
-        </div>
-      )}
-
-      <div className="search">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" style={{flexShrink:0}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Tafuta jina au chumba..."/>
-      </div>
-
-      <div>
-        <div className="sec-title">Wapangaji Wote</div>
-        <div className="sec-sub">Gusa kadi kuona maelezo kamili · Data inasave kiotomatiki</div>
-      </div>
-
-      {tenants.length===0
-        ? <Empty icon="🏘️" t="Hakuna wapangaji bado" s='Gusa "+" hapa chini kuongeza mpangaji wa kwanza'/>
-        : <div className="card-list">{tenants.map(t=><TenantCard key={t.id} tenant={t} onClick={()=>onSelect(t.id)}/>)}</div>
-      }
+      <div class="clist" id="ov-list"></div>
     </div>
-  );
-}
 
-/* ════════════════════════════════════════════════════════════
-   OVERVIEW VIEW
-════════════════════════════════════════════════════════════ */
-function OverView({tenants,query,setQuery,onSelect}){
-  return(
-    <div className="view">
-      <div><div className="sec-title">Maelezo ya Wote</div><div className="sec-sub">Rekodi kamili ya kila mpangaji</div></div>
-      <div className="search">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" style={{flexShrink:0}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Tafuta mpangaji..."/>
-      </div>
-      {tenants.length===0
-        ? <Empty icon="📋" t="Hakuna wapangaji" s="Anza kwa kuongeza wapangaji"/>
-        : <div className="card-list">{tenants.map(t=><OverCard key={t.id} tenant={t} onClick={()=>onSelect(t.id)}/>)}</div>
-      }
+    <!-- DEFAULTERS PAGE -->
+    <div class="page" id="page-def">
+      <div><div class="stitle" style="color:#ef4444">⚠️ Wadaiwa</div><div class="ssub">Wapangaji ambao muda wa kodi umekwisha</div></div>
+      <div class="clist" id="def-list"></div>
     </div>
-  );
-}
 
-/* ════════════════════════════════════════════════════════════
-   DEFAULTERS VIEW
-════════════════════════════════════════════════════════════ */
-function DefView({tenants,onSelect,onToggleLock}){
-  return(
-    <div className="view">
-      <div><div className="sec-title" style={{color:"#ef4444"}}>⚠️ Wadaiwa</div><div className="sec-sub">Wapangaji ambao muda wa kodi umekwisha</div></div>
-      {tenants.length===0
-        ? <Empty icon="🎉" t="Hakuna wadaiwa!" s="Hongera — wapangaji wote wanalipa kwa wakati!"/>
-        : <div className="card-list">{tenants.map(t=><DefCard key={t.id} tenant={t} onSelect={()=>onSelect(t.id)} onLock={()=>onToggleLock(t.id)}/>)}</div>
-      }
-    </div>
-  );
-}
-
-/* ════════════════════════════════════════════════════════════
-   TENANT DETAIL
-════════════════════════════════════════════════════════════ */
-function TenantDetail({tenant,cfg,onBack,onEdit,onAddPayment,onEditPayment,onDeletePayment,onAddDoc,onToggleLock,onDelete}){
-  const [tab,setTab] = useState("pay");
-  const s = getStatus(tenant);
-  const periods = getPeriods(tenant);
-  const totalPaid = tenant.payments.reduce((x,p)=>x+(parseFloat(p.amount)||0),0);
-  const isOver = s.days!==null && s.days<0;
-  const tagCls = {g:"tag-g",a:"tag-a",r:"tag-r",gr:"tag-gr"}[s.color];
-  const barCls = {g:"sbar-g",a:"sbar-a",r:"sbar-r",gr:"sbar-gr"}[s.color];
-
-  // Debt calculation
-  const amt = parseFloat(tenant.rentAmount)||0;
-  const dur = parseInt(tenant.rentDuration)||1;
-  const expiry = calcExpiry(tenant) || addMonths(tenant.moveInDate, dur);
-  const daysLate = Math.max(0, -s.days);
-  const monthsLate = daysLate/30.44;
-  const monthsOwed = Math.ceil(monthsLate/dur)*dur;
-  const debt = isOver ? Math.ceil(monthsLate/dur)*(amt*dur) : 0;
-
-  return(
-    <div className="view">
-      <button className="back-btn" onClick={onBack}>
+    <!-- DETAIL PAGE -->
+    <div class="page" id="page-detail">
+      <button class="back-btn" onclick="showPage('home')">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>
         Rudi
       </button>
-
-      {/* Profile */}
-      <div className="det-header">
-        <div className="det-av">{tenant.name[0].toUpperCase()}</div>
-        <div className="det-info">
-          <div className="det-name">{tenant.name}{tenant.isLocked?" 🔒":""}</div>
-          <div className="det-sub">Chumba {tenant.room}{tenant.phone ? ` · ${tenant.phone}` : ""}</div>
-          <span className={`tag ${tagCls}`} style={{marginTop:4,display:"inline-flex"}}>{s.label}</span>
-        </div>
-      </div>
-
-      {/* Info chips */}
-      <div className="chip-grid">
-        <Chip l="📞 Simu" v={tenant.phone||"—"}/>
-        <Chip l="💰 Kodi/Mwezi" v={tzs(tenant.rentAmount)} c="#10b981"/>
-        <Chip l="📅 Alihamia" v={fmt(tenant.moveInDate)} c="#818cf8"/>
-        <Chip l="💳 Jumla Lilipiwa" v={tzs(totalPaid)} c="#10b981"/>
-        {tenant.email && <Chip l="📧 Email" v={tenant.email}/>}
-        <Chip l="📋 Malipo" v={`${tenant.payments.length} risiti`}/>
-      </div>
-
-      {/* Status bar */}
-      <div className={`sbar ${barCls}`}>
-        <span>
-          {isOver
-            ? `⚠️ Imekwisha — siku ${Math.abs(s.days)} zilizopita`
-            : s.days===0 ? "⏰ Inaisha leo!"
-            : s.color==="gr" ? "📅 Malipo ya kwanza inatakiwa"
-            : `📅 Siku ${s.days} zimebaki`
-          }
-        </span>
-        <span style={{fontWeight:700,flexShrink:0}}>{fmt(s.expiry)}</span>
-      </div>
-
-      {/* Debt bar */}
-      {debt>0 && (
-        <div className="debt-bar">
-          <span>📛 Deni: {tzs(debt)}</span>
-          {tenant.isLocked && <span style={{background:"rgba(239,68,68,.15)",padding:"2px 7px",borderRadius:"7px",fontSize:".72rem"}}>🔒 Imefungwa</span>}
-        </div>
-      )}
-
-      {/* Email button */}
-      {tenant.email && (
-        <a href={makeTenantEmail(tenant,cfg)} className="btn btn-email">
-          📧 Tuma {isOver?"Notisi ya Deni":"Ukumbusho"} kwa {tenant.name}
-        </a>
-      )}
-
-      {/* Actions */}
-      <div className="btn-2col">
-        <button className="btn btn-green" onClick={onAddPayment}>+ Ongeza Malipo</button>
-        <button className={`btn ${tenant.isLocked?"btn-unlock":"btn-lock"}`} onClick={onToggleLock}>
-          {tenant.isLocked?"🔓 Fungua":"🔒 Funga"}
-        </button>
-      </div>
-      <button className="btn btn-amber" onClick={onEdit}>✏️ Hariri Maelezo ya Mpangaji</button>
-
-      {/* Tabs */}
-      <div className="tabs">
-        <button className={`tab-btn${tab==="pay"?" on":""}`} onClick={()=>setTab("pay")}>💳 Malipo ({tenant.payments.length})</button>
-        <button className={`tab-btn${tab==="hist"?" on":""}`} onClick={()=>setTab("hist")}>📅 Historia ({periods.length})</button>
-        <button className={`tab-btn${tab==="doc"?" on":""}`} onClick={()=>setTab("doc")}>📄 Hati ({(tenant.documents||[]).length})</button>
-      </div>
-
-      {/* Tab: Malipo */}
-      {tab==="pay" && (
-        tenant.payments.length===0
-          ? <Empty icon="💳" t="Hakuna malipo bado" s="Gusa 'Ongeza Malipo' kurekodi malipo"/>
-          : <div className="card-list">
-              {[...tenant.payments].reverse().map((p,i)=>(
-                <div key={p.id} className="pay-card">
-                  <div className="pay-top">
-                    <div style={{flex:1,minWidth:0}}>
-                      <div className="pay-amt">{tzs(p.amount)}</div>
-                      <div className="pay-date">Tarehe ya malipo: {fmt(p.date)}</div>
-                      {p.notes && <div className="pay-note">{p.notes}</div>}
-                      {p.periodCovered && <div className="pay-period">📅 Inafunika: {p.periodCovered}</div>}
-                    </div>
-                    <div className="pay-right">
-                      {p.receiptNo && <div className="pay-rno">#{p.receiptNo}</div>}
-                      <div className="pay-num">Risiti {tenant.payments.length-i}</div>
-                      <div className="pay-actions">
-                        {p.receiptImage && <button className="sbtn sbtn-b" onClick={()=>window.open(p.receiptImage)}>📄 Risiti</button>}
-                        <button className="sbtn sbtn-a" onClick={()=>onEditPayment(p)}>✏️</button>
-                        <button className="sbtn sbtn-r" onClick={()=>onDeletePayment(p.id)}>🗑️</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-      )}
-
-      {/* Tab: Historia */}
-      {tab==="hist" && (
-        <div>
-          <div style={{fontSize:".72rem",color:"var(--text3)",marginBottom:8}}>
-            Kodi inahesabiwa kutoka siku ya kuhamia ({fmt(tenant.moveInDate)}). Malipo ya {tzs(tenant.rentAmount)}/mwezi.
-          </div>
-          {periods.length===0
-            ? <Empty icon="📅" t="Hakuna historia" s="Ongeza malipo kuona historia ya vipindi"/>
-            : periods.map(p=>(
-                <div key={p.num} className="period-row">
-                  <div>
-                    <div className="period-lbl">Kipindi {p.num} ({p.months} miezi)</div>
-                    <div style={{fontSize:".72rem",color:"var(--text2)"}}>{fmt(p.start)} → {fmt(p.end)}</div>
-                  </div>
-                  <div className="period-ok">✅ {tzs(p.payment.amount)}</div>
-                </div>
-              ))
-          }
-        </div>
-      )}
-
-      {/* Tab: Hati */}
-      {tab==="doc" && (
-        <div style={{display:"flex",flexDirection:"column",gap:8}}>
-          <button className="btn btn-ghost" onClick={onAddDoc}>+ Ongeza Hati / Kitambulisho / PDF</button>
-          {(tenant.documents||[]).length===0
-            ? <Empty icon="📄" t="Hakuna hati" s="Ongeza vitambulisho na risiti za mpangaji"/>
-            : <div className="card-list">
-                {tenant.documents.map(d=>(
-                  <div key={d.id} className="doc-card">
-                    <div className="doc-name">{d.name||"Hati"}</div>
-                    {d.type && <div className="doc-type">{d.type}</div>}
-                    {d.image && <button className="sbtn sbtn-b" onClick={()=>window.open(d.image)}>🖼️ Tazama</button>}
-                  </div>
-                ))}
-              </div>
-          }
-        </div>
-      )}
-
-      <div className="divider"/>
-      <button className="btn btn-red" onClick={onDelete}>🗑️ Futa Mpangaji Huyu Kabisa</button>
+      <div id="detail-content"></div>
     </div>
-  );
+  </div>
+
+  <!-- FAB -->
+  <button class="fab" id="fab" onclick="openModal('addT')">+</button>
+
+  <!-- BOTTOM NAV -->
+  <div class="bnav">
+    <button class="nb on" id="nb-home" onclick="showPage('home')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#10b981" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Nyumbani</span>
+    </button>
+    <button class="nb" id="nb-ov" onclick="showPage('ov')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round"><rect x="2" y="7" width="4" height="15"/><rect x="10" y="3" width="4" height="19"/><rect x="18" y="11" width="4" height="11"/></svg>
+      <span>Maelezo</span>
+    </button>
+    <button class="nb" id="nb-def" onclick="showPage('def')">
+      <span class="nb-badge" id="def-badge">0</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>Wadaiwa</span>
+    </button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()" id="modal-box"></div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════
+   DATA & STORAGE
+════════════════════════════════════════════════ */
+const DK = 'kodi_data_v2';
+const SK = 'kodi_cfg_v2';
+let tenants = [];
+let cfg = {};
+let currentTenantId = null;
+let currentTab = 'pay';
+
+function loadData() {
+  try { tenants = JSON.parse(localStorage.getItem(DK) || '[]'); } catch { tenants = []; }
+  try { cfg = JSON.parse(localStorage.getItem(SK) || '{}'); } catch { cfg = {}; }
 }
 
-/* ════════════════════════════════════════════════════════════
-   CARDS
-════════════════════════════════════════════════════════════ */
-function TenantCard({tenant,onClick}){
-  const s = getStatus(tenant);
-  const colorMap = {g:"#10b981",a:"#f59e0b",r:"#ef4444",gr:"#6b7280"};
-  const c = colorMap[s.color];
-  const tagCls = {g:"tag-g",a:"tag-a",r:"tag-r",gr:"tag-gr"}[s.color];
-  return(
-    <div className="card tap" style={{"--lc":c}} onClick={onClick}>
-      <div className="card-row">
-        <div className="av" style={{background:`${c}22`,color:c,border:`1px solid ${c}44`}}>{tenant.name[0].toUpperCase()}</div>
-        <div className="card-info">
-          <div className="card-name">{tenant.name}{tenant.isLocked?" 🔒":""}</div>
-          <div className="card-sub">Chumba {tenant.room} · {tenant.phone||"—"}</div>
-        </div>
-        <span className={`tag ${tagCls}`}>{s.label}</span>
-      </div>
-      <div className="card-dates">
-        <div className="dbox"><div className="dbox-lbl">Alihamia</div><div className="dbox-val">{fmt(tenant.moveInDate)}</div></div>
-        <div className="dbox"><div className="dbox-lbl">Kodi Inaisha</div><div className="dbox-val" style={{color:c}}>{fmt(s.expiry)}</div></div>
-      </div>
-    </div>
-  );
+function saveData() {
+  const str = JSON.stringify(tenants);
+  try {
+    localStorage.setItem(DK, str);
+    showSaved();
+  } catch(e) {
+    if (e.name === 'QuotaExceededError') {
+      // Strip images
+      const stripped = tenants.map(t => ({...t,
+        payments: t.payments.map(p => ({...p, receiptImage: null})),
+        documents: (t.documents||[]).map(d => ({...d, image: null}))
+      }));
+      try { localStorage.setItem(DK, JSON.stringify(stripped)); showSaved(); toast('⚠️ Imehifadhiwa bila picha — nafasi imejaa', true); }
+      catch { toast('❌ Kuhifadhi kumeshindwa!', true); }
+    } else { toast('❌ Kuhifadhi kumeshindwa!', true); }
+  }
 }
 
-function OverCard({tenant,onClick}){
-  const s = getStatus(tenant);
-  const cMap = {g:"#10b981",a:"#f59e0b",r:"#ef4444",gr:"#9ca3af"};
-  const total = tenant.payments.reduce((x,p)=>x+(parseFloat(p.amount)||0),0);
-  return(
-    <div className="card tap" onClick={onClick}>
-      <div className="card-row" style={{marginBottom:9}}>
-        <div className="av" style={{background:"#818cf822",color:"#818cf8",border:"1px solid #818cf844"}}>{tenant.name[0].toUpperCase()}</div>
-        <div className="card-info">
-          <div className="card-name">{tenant.name}{tenant.isLocked?" 🔒":""}</div>
-          <div className="card-sub">Chumba {tenant.room} · Alihamia {fmt(tenant.moveInDate)}</div>
-        </div>
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" style={{flexShrink:0}}><polyline points="9 18 15 12 9 6"/></svg>
-      </div>
-      <div className="chip-grid" style={{gap:5}}>
-        <Chip l="Kodi/Mwezi" v={tzs(tenant.rentAmount)} c="#10b981" sm/>
-        <Chip l="Malipo Yote" v={tzs(total)} c="#10b981" sm/>
-        <Chip l="Risiti" v={`${tenant.payments.length}`} c="#818cf8" sm/>
-        <Chip l="Hali" v={s.label} c={cMap[s.color]} sm/>
-      </div>
-    </div>
-  );
+function saveCfg() {
+  try { localStorage.setItem(SK, JSON.stringify(cfg)); } catch {}
 }
 
-function DefCard({tenant,onSelect,onLock}){
-  const s = getStatus(tenant);
-  return(
-    <div className="card" style={{"--lc":"#ef4444"}}>
-      <div className="card-row" style={{marginBottom:9}}>
-        <div className="av" style={{background:"#ef444422",color:"#ef4444",border:"1px solid #ef444444"}}>{tenant.name[0].toUpperCase()}</div>
-        <div className="card-info">
-          <div className="card-name">{tenant.name}</div>
-          <div className="card-sub">Chumba {tenant.room} · {tenant.phone||"—"}</div>
-        </div>
-        <span className="tag tag-r" style={{flexShrink:0}}>{tenant.isLocked?"🔒 ":""}Siku {Math.abs(s.days)}</span>
-      </div>
-      <div className="chip-grid" style={{gap:5,marginBottom:9}}>
-        <Chip l="Inaisha" v={fmt(s.expiry)} c="#ef4444" sm/>
-        <Chip l="Imechelewa" v={`Siku ${Math.abs(s.days)}`} c="#ef4444" sm/>
-      </div>
-      <div className="btn-2col">
-        <button className="btn btn-ghost" onClick={onSelect}>Maelezo</button>
-        <button className={`btn ${tenant.isLocked?"btn-unlock":"btn-lock"}`} onClick={onLock}>{tenant.isLocked?"🔓 Fungua":"🔒 Funga"}</button>
-      </div>
-    </div>
-  );
+/* ════════════════════════════════════════════════
+   UTILS
+════════════════════════════════════════════════ */
+function fmt(d) {
+  if (!d) return '—';
+  return new Date(d).toLocaleDateString('en-TZ', {day:'2-digit', month:'short', year:'numeric'});
 }
+function tsh(n) { return n ? 'TSh ' + Number(n).toLocaleString() : 'TSh 0'; }
+function addM(dateStr, n) {
+  const d = new Date(dateStr);
+  d.setMonth(d.getMonth() + Math.floor(n));
+  return d;
+}
+function daysTo(date) {
+  if (!date) return null;
+  const t = new Date(); t.setHours(0,0,0,0);
+  const e = new Date(date); e.setHours(0,0,0,0);
+  return Math.floor((e - t) / 86400000);
+}
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function uid() { return Date.now().toString() + Math.random().toString(36).slice(2,7); }
 
-/* ════════════════════════════════════════════════════════════
-   SMALL COMPONENTS
-════════════════════════════════════════════════════════════ */
-function Chip({l,v,c,sm}){
-  return(<div className={`chip${sm?" sm":""}`}><div className="chip-lbl">{l}</div><div className="chip-val" style={{color:c||"var(--text)"}}>{v}</div></div>);
-}
-function Empty({icon,t,s}){
-  return(<div className="empty"><div className="empty-ico">{icon}</div><div className="empty-t">{t}</div><div className="empty-s">{s}</div></div>);
-}
-function Modal({title,onClose,children}){
-  return(<div className="overlay" onClick={onClose}><div className="modal" onClick={e=>e.stopPropagation()}><div className="modal-head"><div className="modal-title">{title}</div><button className="x-btn" onClick={onClose}>×</button></div>{children}</div></div>);
-}
-function Field({l,hint,children}){
-  return(<div className="field"><label className="f-lbl">{l}</label>{children}{hint&&<span className="f-hint">{hint}</span>}</div>);
-}
-
-/* ════════════════════════════════════════════════════════════
-   MODALS
-════════════════════════════════════════════════════════════ */
-function AddTenantModal({onAdd,onClose}){
-  const today = new Date().toISOString().split("T")[0];
-  const [f,sf] = useState({name:"",phone:"",email:"",room:"",rentAmount:"",rentDuration:"1",moveInDate:today,notes:""});
-  const s = (k,v) => sf(p=>({...p,[k]:v}));
-  const submit = () => {
-    if(!f.name.trim())     return alert("Weka jina la mpangaji");
-    if(!f.phone.trim())    return alert("Weka nambari ya simu");
-    if(!f.room.trim())     return alert("Weka nambari ya chumba");
-    if(!f.rentAmount)      return alert("Weka kiasi cha kodi kwa mwezi");
-    if(!f.moveInDate)      return alert("Weka tarehe ya kuhamia");
-    onAdd(f);
-  };
-  return(<Modal title="➕ Sajili Mpangaji Mpya" onClose={onClose}>
-    <Field l="Jina Kamili *"><input className="inp" placeholder="Mfano: Anna Msigwa" value={f.name} onChange={e=>s("name",e.target.value)}/></Field>
-    <div className="inp-2">
-      <Field l="Simu *"><input className="inp" placeholder="0712345678" type="tel" value={f.phone} onChange={e=>s("phone",e.target.value)}/></Field>
-      <Field l="Chumba *"><input className="inp" placeholder="A1" value={f.room} onChange={e=>s("room",e.target.value)}/></Field>
-    </div>
-    <Field l="Email (hiari — kwa arifa)"><input className="inp" placeholder="anna@gmail.com" type="email" value={f.email} onChange={e=>s("email",e.target.value)}/></Field>
-    <div className="inp-2">
-      <Field l="Kodi kwa Mwezi (TZS) *"><input className="inp" placeholder="40000" type="number" value={f.rentAmount} onChange={e=>s("rentAmount",e.target.value)}/></Field>
-      <Field l="Muda wa Kodi">
-        <select className="inp" value={f.rentDuration} onChange={e=>s("rentDuration",e.target.value)}>
-          {[1,2,3,6,12].map(m=><option key={m} value={m}>{m} {m===1?"Mwezi":"Miezi"}</option>)}
-        </select>
-      </Field>
-    </div>
-    <Field l="Tarehe ya Kuhamia *" hint="⚠️ Kodi itahesabiwa kutoka tarehe hii — si tarehe ya malipo">
-      <input className="inp" type="date" value={f.moveInDate} onChange={e=>s("moveInDate",e.target.value)}/>
-    </Field>
-    <Field l="Maelezo (hiari)"><textarea className="inp" rows={2} style={{resize:"none"}} value={f.notes} onChange={e=>s("notes",e.target.value)}/></Field>
-    <div className="m-2col">
-      <button className="btn btn-ghost" onClick={onClose}>Ghairi</button>
-      <button className="btn btn-green" onClick={submit}>✅ Sajili na Hifadhi</button>
-    </div>
-  </Modal>);
-}
-
-function EditTenantModal({tenant,onSave,onClose}){
-  const [f,sf] = useState({
-    name:tenant.name||"", phone:tenant.phone||"", email:tenant.email||"",
-    room:tenant.room||"", rentAmount:tenant.rentAmount||"",
-    rentDuration:tenant.rentDuration||"1", moveInDate:tenant.moveInDate||"", notes:tenant.notes||""
+/* ════════════════════════════════════════════════
+   RENT CALCULATION
+   Kodi inahesabiwa kutoka siku ya kuhamia
+   Malipo = kiasi / kodi_kwa_mwezi * muda_miezi
+════════════════════════════════════════════════ */
+function calcExpiry(t) {
+  const {moveInDate, rentAmount, payments=[], rentDuration=1} = t;
+  if (!moveInDate || !rentAmount) return null;
+  const amt = parseFloat(rentAmount) || 0;
+  const dur = parseInt(rentDuration) || 1;
+  if (!amt) return null;
+  let totalMonths = 0;
+  payments.forEach(p => {
+    const paid = parseFloat(p.amount) || 0;
+    totalMonths += paid / amt;
   });
-  const s = (k,v) => sf(p=>({...p,[k]:v}));
-  return(<Modal title="✏️ Hariri Maelezo ya Mpangaji" onClose={onClose}>
-    <Field l="Jina Kamili"><input className="inp" value={f.name} onChange={e=>s("name",e.target.value)}/></Field>
-    <div className="inp-2">
-      <Field l="Simu"><input className="inp" type="tel" value={f.phone} onChange={e=>s("phone",e.target.value)}/></Field>
-      <Field l="Chumba"><input className="inp" value={f.room} onChange={e=>s("room",e.target.value)}/></Field>
-    </div>
-    <Field l="Email"><input className="inp" type="email" value={f.email} onChange={e=>s("email",e.target.value)}/></Field>
-    <div className="inp-2">
-      <Field l="Kodi kwa Mwezi (TZS)"><input className="inp" type="number" value={f.rentAmount} onChange={e=>s("rentAmount",e.target.value)}/></Field>
-      <Field l="Muda wa Kodi">
-        <select className="inp" value={f.rentDuration} onChange={e=>s("rentDuration",e.target.value)}>
-          {[1,2,3,6,12].map(m=><option key={m} value={m}>{m} {m===1?"Mwezi":"Miezi"}</option>)}
-        </select>
-      </Field>
-    </div>
-    <Field l="Tarehe ya Kuhamia" hint="Kubadilisha hii kutabadilisha mzunguko wote wa kodi">
-      <input className="inp" type="date" value={f.moveInDate} onChange={e=>s("moveInDate",e.target.value)}/>
-    </Field>
-    <Field l="Maelezo"><textarea className="inp" rows={2} style={{resize:"none"}} value={f.notes} onChange={e=>s("notes",e.target.value)}/></Field>
-    <div className="m-2col">
-      <button className="btn btn-ghost" onClick={onClose}>Ghairi</button>
-      <button className="btn btn-green" onClick={()=>{if(!f.name.trim())return alert("Weka jina");onSave(tenant.id,f)}}>✅ Hifadhi Mabadiliko</button>
-    </div>
-  </Modal>);
+  return addM(moveInDate, totalMonths);
 }
 
-function AddPaymentModal({ctx,onAdd,onClose}){
-  const [f,sf] = useState({date:new Date().toISOString().split("T")[0],amount:"",receiptNo:"",notes:"",receiptImage:null});
-  const [uploading,setUploading] = useState(false);
-  const s = (k,v) => sf(p=>({...p,[k]:v}));
-  const handleImg = async e => {
-    const file=e.target.files[0]; if(!file) return;
-    setUploading(true);
-    try{ s("receiptImage", await compressImg(file)); }
-    catch{ alert("Imeshindwa kupakia picha. Jaribu tena."); }
-    setUploading(false);
+function getStatus(t) {
+  const dur = parseInt(t.rentDuration) || 1;
+  const hasPaid = (t.payments||[]).length > 0;
+  const expiry = hasPaid ? calcExpiry(t) : addM(t.moveInDate, dur);
+  if (!t.moveInDate) return {l:'Hajalipa', c:'gr', days:null, exp:null};
+  const days = daysTo(expiry);
+  if (t.isLocked) return {l:'Imefungwa', c:'r', days, exp:expiry};
+  if (days < 0) return {l: hasPaid ? 'Imedaiwa' : 'Hajalipa (Deni)', c:'r', days, exp:expiry};
+  if (days <= 7) return {l:'Karibu Kwisha', c:'a', days, exp:expiry};
+  if (!hasPaid) return {l:'Hajalipa', c:'gr', days, exp:expiry};
+  return {l:'Imelipiwa', c:'g', days, exp:expiry};
+}
+
+function getPeriods(t) {
+  const {moveInDate, rentAmount, payments=[], rentDuration=1} = t;
+  if (!moveInDate || !rentAmount) return [];
+  const amt = parseFloat(rentAmount) || 0;
+  const dur = parseInt(rentDuration) || 1;
+  const list = [];
+  let cursor = new Date(moveInDate);
+  payments.forEach((p, i) => {
+    const paid = parseFloat(p.amount) || 0;
+    const months = amt > 0 ? paid / amt : dur;
+    const end = addM(cursor.toISOString(), months);
+    list.push({num:i+1, start:new Date(cursor), end, pay:p, months:Math.round(months*10)/10});
+    cursor = new Date(end);
+  });
+  return list;
+}
+
+function tagClass(c) { return {g:'tg', a:'ta', r:'tr', gr:'tgr'}[c] || 'tgr'; }
+function colorOf(c) { return {g:'#10b981', a:'#f59e0b', r:'#ef4444', gr:'#6b7280'}[c] || '#6b7280'; }
+function sbClass(c) { return {g:'sb-g', a:'sb-a', r:'sb-r', gr:'sb-gr'}[c] || 'sb-gr'; }
+
+/* ════════════════════════════════════════════════
+   UI HELPERS
+════════════════════════════════════════════════ */
+let toastTimer;
+function toast(msg, err=false) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show ' + (err ? 'terr' : 'tok');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
+}
+
+let savedTimer;
+function showSaved() {
+  const el = document.getElementById('saved-pill');
+  el.classList.add('show');
+  clearTimeout(savedTimer);
+  savedTimer = setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
+  const nb = document.getElementById('nb-' + id);
+  if (nb) nb.classList.add('on');
+  const fab = document.getElementById('fab');
+  fab.style.display = (id === 'detail') ? 'none' : 'flex';
+  if (id === 'home') renderHome();
+  if (id === 'ov') renderOv();
+  if (id === 'def') renderDef();
+  // Update nav icons color
+  updateNavIcons(id);
+}
+
+function updateNavIcons(active) {
+  const icons = {
+    home: document.querySelector('#nb-home svg'),
+    ov: document.querySelector('#nb-ov svg'),
+    def: document.querySelector('#nb-def svg')
   };
-  return(<Modal title="💳 Rekodi Malipo" onClose={onClose}>
-    <div className="inp-2">
-      <Field l="Kiasi (TZS) *"><input className="inp" placeholder="120000" type="number" value={f.amount} onChange={e=>s("amount",e.target.value)}/></Field>
-      <Field l="Tarehe ya Malipo"><input className="inp" type="date" value={f.date} onChange={e=>s("date",e.target.value)}/></Field>
-    </div>
-    <Field l="Nambari ya Risiti (hiari)"><input className="inp" placeholder="RCP-001" value={f.receiptNo} onChange={e=>s("receiptNo",e.target.value)}/></Field>
-    <Field l="Picha / PDF ya Risiti (hiari)" hint="Picha itabanwa kiotomatiki ili isichukue nafasi nyingi">
-      <label className={`uzone${f.receiptImage?" ok":""}`}>
-        {uploading ? "⏳ Inapakia na kubana picha..." : f.receiptImage ? "✅ Picha imepakiwa — gusa kubadilisha" : "📎 Gusa hapa kupakia picha ya risiti"}
-        <input type="file" accept="image/*,application/pdf" onChange={handleImg} style={{display:"none"}}/>
-      </label>
-    </Field>
-    <Field l="Maelezo (hiari)"><input className="inp" placeholder="Kodi ya Januari 2025..." value={f.notes} onChange={e=>s("notes",e.target.value)}/></Field>
-    <div className="m-2col">
-      <button className="btn btn-ghost" onClick={onClose}>Ghairi</button>
-      <button className="btn btn-green" disabled={uploading} onClick={()=>{if(!f.amount)return alert("Weka kiasi cha malipo");onAdd(ctx.tid,f)}}>✅ Hifadhi Malipo</button>
-    </div>
-  </Modal>);
+  const colors = {home:'#6b7280', ov:'#6b7280', def:'#6b7280'};
+  if (active === 'home') colors.home = '#10b981';
+  if (active === 'ov') colors.ov = '#10b981';
+  if (active === 'def') colors.def = '#ef4444';
+  if (icons.home) { icons.home.setAttribute('fill', active==='home'?'#10b981':'none'); icons.home.setAttribute('stroke', colors.home); }
+  if (icons.ov) icons.ov.setAttribute('stroke', colors.ov);
+  if (icons.def) icons.def.setAttribute('stroke', colors.def);
 }
 
-function EditPaymentModal({ctx,onSave,onClose}){
-  const p = ctx.pay;
-  const [f,sf] = useState({date:p.date,amount:p.amount,receiptNo:p.receiptNo||"",notes:p.notes||""});
-  const s = (k,v) => sf(x=>({...x,[k]:v}));
-  return(<Modal title="✏️ Hariri Malipo" onClose={onClose}>
-    <div className="inp-2">
-      <Field l="Kiasi (TZS) *"><input className="inp" type="number" value={f.amount} onChange={e=>s("amount",e.target.value)}/></Field>
-      <Field l="Tarehe ya Malipo"><input className="inp" type="date" value={f.date} onChange={e=>s("date",e.target.value)}/></Field>
-    </div>
-    <Field l="Nambari ya Risiti"><input className="inp" value={f.receiptNo} onChange={e=>s("receiptNo",e.target.value)}/></Field>
-    <Field l="Maelezo"><input className="inp" value={f.notes} onChange={e=>s("notes",e.target.value)}/></Field>
-    <div className="m-2col">
-      <button className="btn btn-ghost" onClick={onClose}>Ghairi</button>
-      <button className="btn btn-green" onClick={()=>{if(!f.amount)return alert("Weka kiasi");onSave(ctx.tid,p.id,f)}}>✅ Hifadhi</button>
-    </div>
-  </Modal>);
+function chip(label, value, color='') {
+  return `<div class="chip"><div class="clbl">${esc(label)}</div><div class="cval" style="${color?'color:'+color:''}">${esc(value)}</div></div>`;
+}
+function chipSm(label, value, color='') {
+  return `<div class="chip sm"><div class="clbl">${esc(label)}</div><div class="cval" style="${color?'color:'+color:''}">${esc(value)}</div></div>`;
+}
+function emptyEl(icon, t, s) {
+  return `<div class="empty"><div class="eico">${icon}</div><div class="et">${t}</div><div class="es">${s}</div></div>`;
 }
 
-function AddDocModal({tid,onAdd,onClose}){
-  const [f,sf] = useState({name:"",type:"Kitambulisho cha Taifa",image:null});
-  const [uploading,setUploading] = useState(false);
-  const s = (k,v) => sf(p=>({...p,[k]:v}));
-  const handleImg = async e => {
-    const file=e.target.files[0]; if(!file) return;
-    setUploading(true);
-    try{ s("image", await compressImg(file,500,0.6)); }
-    catch{ alert("Imeshindwa kupakia"); }
-    setUploading(false);
+/* ════════════════════════════════════════════════
+   AUTO-LOCK
+════════════════════════════════════════════════ */
+function autoLock() {
+  let changed = false;
+  tenants = tenants.map(t => {
+    const s = getStatus(t);
+    if (s.days !== null && s.days < -7 && !t.isLocked) { changed = true; return {...t, isLocked: true}; }
+    return t;
+  });
+  if (changed) saveData();
+}
+
+/* ════════════════════════════════════════════════
+   RENDER HOME
+════════════════════════════════════════════════ */
+function renderHome() {
+  const q = (document.getElementById('search-home')?.value || '').toLowerCase();
+  const fil = tenants.filter(t => t.name.toLowerCase().includes(q) || t.room.toLowerCase().includes(q));
+  const defs = tenants.filter(t => { const s=getStatus(t); return s.days!==null&&s.days<0; });
+  const exp = tenants.filter(t => { const s=getStatus(t); return s.days!==null&&s.days<=7&&s.days>=0; });
+
+  document.getElementById('stat-paying').textContent = tenants.filter(t=>getStatus(t).c==='g').length;
+  document.getElementById('stat-soon').textContent = tenants.filter(t=>getStatus(t).c==='a').length;
+  document.getElementById('stat-owed').textContent = tenants.filter(t=>getStatus(t).c==='r').length;
+  document.getElementById('stat-all').textContent = tenants.length;
+  document.getElementById('brand-sub').textContent = `${tenants.length} wapangaji · ${defs.length} wadaiwa`;
+
+  // Badge
+  const badge = document.getElementById('def-badge');
+  badge.textContent = defs.length;
+  badge.classList.toggle('show', defs.length > 0);
+
+  // Alert
+  const ab = document.getElementById('alert-box');
+  if (exp.length > 0) {
+    let html = `<div class="atitle">⚠️ Kodi Karibu Kwisha — ${exp.length} mpangaji</div>`;
+    exp.forEach(t => {
+      const s = getStatus(t);
+      html += `<div class="arow"><span>${esc(t.name)} (Chumba ${esc(t.room)}) — siku ${s.days} zimebaki</span>`;
+      if (t.email && cfg.ownerPhone) html += `<button class="alink" onclick="window.open('${tMail(t)}')">📧 Tuma arifa</button>`;
+      html += `</div>`;
+    });
+    if (cfg.ownerEmail) html += `<button class="alink" onclick="window.open('${oMail()}')">📧 Tuma ripoti kwangu</button>`;
+    ab.innerHTML = html;
+    ab.style.display = 'flex';
+  } else {
+    ab.style.display = 'none';
+  }
+
+  // List
+  const list = document.getElementById('home-list');
+  if (fil.length === 0) {
+    list.innerHTML = emptyEl('🏘️', 'Hakuna wapangaji bado', 'Gusa "+" hapa chini kuongeza mpangaji wa kwanza');
+    return;
+  }
+  list.innerHTML = fil.map(t => tenantCard(t)).join('');
+}
+
+function tenantCard(t) {
+  const s = getStatus(t);
+  const c = colorOf(s.c);
+  const tc = tagClass(s.c);
+  return `<div class="card" style="--lc:${c}" onclick="openDetail('${t.id}')">
+    <div class="crow">
+      <div class="av" style="background:${c}22;color:${c};border:1px solid ${c}44">${esc(t.name[0].toUpperCase())}</div>
+      <div class="cinfo">
+        <div class="cname">${esc(t.name)}${t.isLocked?' 🔒':''}</div>
+        <div class="csub">Chumba ${esc(t.room)} · ${esc(t.phone||'—')}</div>
+      </div>
+      <span class="tag ${tc}">${esc(s.l)}</span>
+    </div>
+    <div class="cdates">
+      <div class="dbox"><div class="dlbl">Alihamia</div><div class="dval">${fmt(t.moveInDate)}</div></div>
+      <div class="dbox"><div class="dlbl">Kodi Inaisha</div><div class="dval" style="color:${c}">${fmt(s.exp)}</div></div>
+    </div>
+  </div>`;
+}
+
+/* ════════════════════════════════════════════════
+   RENDER OVERVIEW
+════════════════════════════════════════════════ */
+function renderOv() {
+  const q = (document.getElementById('search-ov')?.value || '').toLowerCase();
+  const fil = tenants.filter(t => t.name.toLowerCase().includes(q) || t.room.toLowerCase().includes(q));
+  const list = document.getElementById('ov-list');
+  if (fil.length === 0) { list.innerHTML = emptyEl('📋', 'Hakuna wapangaji', 'Anza kwa kuongeza wapangaji'); return; }
+  const cm = {g:'#10b981', a:'#f59e0b', r:'#ef4444', gr:'#9ca3af'};
+  list.innerHTML = fil.map(t => {
+    const s = getStatus(t);
+    const total = t.payments.reduce((x,p)=>x+(parseFloat(p.amount)||0),0);
+    return `<div class="card" onclick="openDetail('${t.id}')">
+      <div class="crow" style="margin-bottom:9px">
+        <div class="av" style="background:#818cf822;color:#818cf8;border:1px solid #818cf844">${esc(t.name[0].toUpperCase())}</div>
+        <div class="cinfo"><div class="cname">${esc(t.name)}${t.isLocked?' 🔒':''}</div><div class="csub">Chumba ${esc(t.room)} · Alihamia ${fmt(t.moveInDate)}</div></div>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div class="cgrid" style="gap:5px">
+        ${chipSm('Kodi/Mwezi', tsh(t.rentAmount), '#10b981')}
+        ${chipSm('Malipo Yote', tsh(total), '#10b981')}
+        ${chipSm('Risiti', t.payments.length+'', '#818cf8')}
+        ${chipSm('Hali', s.l, cm[s.c]||'#9ca3af')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ════════════════════════════════════════════════
+   RENDER DEFAULTERS
+════════════════════════════════════════════════ */
+function renderDef() {
+  const defs = tenants.filter(t => { const s=getStatus(t); return s.days!==null&&s.days<0; });
+  const list = document.getElementById('def-list');
+  if (defs.length === 0) { list.innerHTML = emptyEl('🎉', 'Hakuna wadaiwa!', 'Hongera — wapangaji wote wanalipa kwa wakati!'); return; }
+  list.innerHTML = defs.map(t => {
+    const s = getStatus(t);
+    return `<div class="card" style="--lc:#ef4444">
+      <div class="crow" style="margin-bottom:9px">
+        <div class="av" style="background:#ef444422;color:#ef4444;border:1px solid #ef444444">${esc(t.name[0].toUpperCase())}</div>
+        <div class="cinfo"><div class="cname">${esc(t.name)}</div><div class="csub">Chumba ${esc(t.room)} · ${esc(t.phone||'—')}</div></div>
+        <span class="tag tr">${t.isLocked?'🔒 ':''}Siku ${Math.abs(s.days)}</span>
+      </div>
+      <div class="cgrid" style="gap:5px;margin-bottom:9px">
+        ${chipSm('Inaisha', fmt(s.exp), '#ef4444')}
+        ${chipSm('Imechelewa', 'Siku '+Math.abs(s.days), '#ef4444')}
+      </div>
+      <div class="b2">
+        <button class="btn btn-gh" onclick="openDetail('${t.id}')">Maelezo</button>
+        <button class="btn ${t.isLocked?'btn-ul':'btn-lk'}" onclick="toggleLock('${t.id}')">${t.isLocked?'🔓 Fungua':'🔒 Funga'}</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ════════════════════════════════════════════════
+   DETAIL
+════════════════════════════════════════════════ */
+function openDetail(id) {
+  currentTenantId = id;
+  currentTab = 'pay';
+  showPage('detail');
+  renderDetail();
+}
+
+function renderDetail() {
+  const t = tenants.find(x=>x.id===currentTenantId);
+  if (!t) { showPage('home'); return; }
+  const s = getStatus(t);
+  const tc = tagClass(s.c);
+  const bc = sbClass(s.c);
+  const total = t.payments.reduce((x,p)=>x+(parseFloat(p.amount)||0),0);
+  const isOv = s.days !== null && s.days < 0;
+  const amt = parseFloat(t.rentAmount)||0;
+  const dur = parseInt(t.rentDuration)||1;
+  const debt = isOv ? Math.ceil(Math.abs(s.days)/30.44/dur)*amt*dur : 0;
+
+  let html = `
+    <div class="det-head">
+      <div class="det-av">${esc(t.name[0].toUpperCase())}</div>
+      <div class="det-info">
+        <div class="det-name">${esc(t.name)}${t.isLocked?' 🔒':''}</div>
+        <div class="det-sub">Chumba ${esc(t.room)}${t.phone?' · '+esc(t.phone):''}</div>
+        <span class="tag ${tc}" style="margin-top:4px">${esc(s.l)}</span>
+      </div>
+    </div>
+    <div class="cgrid">
+      ${chip('📞 Simu', t.phone||'—')}
+      ${chip('💰 Kodi/Mwezi', tsh(t.rentAmount), '#10b981')}
+      ${chip('📅 Alihamia', fmt(t.moveInDate), '#818cf8')}
+      ${chip('💳 Jumla Lilipiwa', tsh(total), '#10b981')}
+      ${t.email ? chip('📧 Email', t.email) : ''}
+      ${chip('📋 Malipo', t.payments.length+' risiti')}
+    </div>
+    <div class="sbar2 ${bc}">
+      <span>${isOv ? '⚠️ Imekwisha siku '+Math.abs(s.days)+' zilizopita' : s.days===0 ? '⏰ Inaisha leo!' : s.c==='gr' ? '📅 Malipo ya kwanza inatakiwa' : '📅 Siku '+s.days+' zimebaki'}</span>
+      <span style="font-weight:700;flex-shrink:0">${fmt(s.exp)}</span>
+    </div>`;
+
+  if (debt > 0) html += `<div class="debt-bar"><span>📛 Deni takriban: ${tsh(debt)}</span>${t.isLocked?'<span style="background:rgba(239,68,68,.15);padding:2px 7px;border-radius:7px;font-size:.72rem">🔒 Imefungwa</span>':''}</div>`;
+  if (t.email) html += `<a href="${tMail(t)}" class="btn btn-em">📧 Tuma ${isOv?'Notisi ya Deni':'Ukumbusho'} kwa ${esc(t.name)}</a>`;
+
+  html += `<div class="b2">
+    <button class="btn btn-g" onclick="openModal('addP')">+ Ongeza Malipo</button>
+    <button class="btn ${t.isLocked?'btn-ul':'btn-lk'}" onclick="toggleLock('${t.id}')">${t.isLocked?'🔓 Fungua':'🔒 Funga'}</button>
+  </div>
+  <button class="btn btn-am" onclick="openModal('editT')">✏️ Hariri Maelezo ya Mpangaji</button>
+  <div class="tabs">
+    <button class="tbt${currentTab==='pay'?' on':''}" onclick="switchTab('pay')">💳 Malipo (${t.payments.length})</button>
+    <button class="tbt${currentTab==='hist'?' on':''}" onclick="switchTab('hist')">📅 Historia (${getPeriods(t).length})</button>
+    <button class="tbt${currentTab==='doc'?' on':''}" onclick="switchTab('doc')">📄 Hati (${(t.documents||[]).length})</button>
+  </div>`;
+
+  // Tab: Malipo
+  html += `<div class="tab-pane${currentTab==='pay'?' active':''}" id="tab-pay">`;
+  if (t.payments.length === 0) {
+    html += emptyEl('💳', 'Hakuna malipo bado', "Gusa 'Ongeza Malipo' kurekodi malipo");
+  } else {
+    const rev = [...t.payments].reverse();
+    html += '<div class="clist">' + rev.map((p,i) => {
+      const num = t.payments.length - i;
+      return `<div class="pcard">
+        <div class="ptop">
+          <div style="flex:1;min-width:0">
+            <div class="pamt">${tsh(p.amount)}</div>
+            <div class="pdate">Tarehe ya malipo: ${fmt(p.date)}</div>
+            ${p.notes ? '<div class="pnote">'+esc(p.notes)+'</div>' : ''}
+            ${p.receiptNo ? '<div class="prno">Risiti #'+esc(p.receiptNo)+'</div>' : ''}
+          </div>
+          <div class="pright">
+            <div class="pnum">Malipo ${num}</div>
+            <div class="pacts">
+              ${p.receiptImage ? `<button class="sbtn sbt-b" onclick="window.open(tenants.find(x=>x.id==='${currentTenantId}').payments.find(x=>x.id==='${p.id}').receiptImage)">📄 Risiti</button>` : ''}
+              <button class="sbtn sbt-a" onclick="editPayment('${p.id}')">✏️</button>
+              <button class="sbtn sbt-r" onclick="delPayment('${p.id}')">🗑️</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }).join('') + '</div>';
+  }
+  html += '</div>';
+
+  // Tab: Historia
+  const periods = getPeriods(t);
+  html += `<div class="tab-pane${currentTab==='hist'?' active':''}" id="tab-hist">`;
+  html += `<div style="font-size:.72rem;color:var(--tx3);margin-bottom:8px">Kodi inahesabiwa kutoka siku ya kuhamia (${fmt(t.moveInDate)}). Kodi: ${tsh(t.rentAmount)}/mwezi.</div>`;
+  if (periods.length === 0) {
+    html += emptyEl('📅', 'Hakuna historia', 'Ongeza malipo kuona historia ya vipindi');
+  } else {
+    html += periods.map(p => `
+      <div class="prow">
+        <div><div class="plbl">Kipindi ${p.num} (${p.months} miezi)</div><div style="font-size:.72rem;color:var(--tx2)">${fmt(p.start)} → ${fmt(p.end)}</div></div>
+        <div class="pok">✅ ${tsh(p.pay.amount)}</div>
+      </div>`).join('');
+  }
+  html += '</div>';
+
+  // Tab: Hati
+  const docs = t.documents || [];
+  html += `<div class="tab-pane${currentTab==='doc'?' active':''}" id="tab-doc">`;
+  html += `<button class="btn btn-gh" style="margin-bottom:8px" onclick="openModal('addD')">+ Ongeza Hati / Kitambulisho</button>`;
+  if (docs.length === 0) {
+    html += emptyEl('📄', 'Hakuna hati', 'Ongeza vitambulisho na risiti za mpangaji');
+  } else {
+    html += '<div class="clist">' + docs.map(d => `
+      <div class="doccard">
+        <div class="doc-name">${esc(d.name||'Hati')}</div>
+        ${d.type ? '<div class="doc-type">'+esc(d.type)+'</div>' : ''}
+        ${d.image ? `<button class="sbtn sbt-b" onclick="window.open(tenants.find(x=>x.id==='${currentTenantId}').documents.find(x=>x.id==='${d.id}').image)">🖼️ Tazama</button>` : ''}
+      </div>`).join('') + '</div>';
+  }
+  html += '</div>';
+
+  html += `<div class="divider"></div>
+  <button class="btn btn-rd" onclick="delTenant('${t.id}')">🗑️ Futa Mpangaji Huyu Kabisa</button>`;
+
+  document.getElementById('detail-content').innerHTML = html;
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tbt').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('on');
+  const pane = document.getElementById('tab-' + tab);
+  if (pane) pane.classList.add('active');
+}
+
+/* ════════════════════════════════════════════════
+   CRUD OPERATIONS
+════════════════════════════════════════════════ */
+function toggleLock(id) {
+  tenants = tenants.map(t => t.id===id ? {...t, isLocked:!t.isLocked} : t);
+  saveData();
+  if (currentTenantId === id) renderDetail();
+  else { renderDef(); renderHome(); }
+}
+
+function delTenant(id) {
+  if (!confirm('Futa mpangaji huyu kabisa? Haiwezi kurudishwa.')) return;
+  tenants = tenants.filter(t => t.id !== id);
+  saveData();
+  showPage('home');
+  toast('Mpangaji amefutwa', true);
+}
+
+function delPayment(pid) {
+  if (!confirm('Futa malipo haya?')) return;
+  tenants = tenants.map(t => t.id===currentTenantId ? {...t, payments:t.payments.filter(p=>p.id!==pid)} : t);
+  saveData();
+  renderDetail();
+  toast('Malipo yamefutwa', true);
+}
+
+function editPayment(pid) {
+  const t = tenants.find(x=>x.id===currentTenantId);
+  const p = t.payments.find(x=>x.id===pid);
+  openModal('editP', p);
+}
+
+/* ════════════════════════════════════════════════
+   EMAIL
+════════════════════════════════════════════════ */
+function tMail(t) {
+  const s = getStatus(t);
+  const over = s.days < 0;
+  const sub = over ? `Kodi Imedaiwa — Chumba ${t.room}` : `Ukumbusho wa Kodi — Chumba ${t.room}`;
+  const own = cfg.ownerPhone ? `\nWasiliana nasi: ${cfg.ownerPhone}` : '';
+  const body = over
+    ? `Habari ${t.name},\n\nKodi yako ya Chumba ${t.room} imekwisha tangu ${fmt(s.exp)} (imechelewa siku ${Math.abs(s.days)}).\nKiasi: ${tsh(t.rentAmount)}/mwezi.\n\nTafadhali lipa haraka.${own}\n\nAsante.`
+    : `Habari ${t.name},\n\nKodi yako ya Chumba ${t.room} itakwisha ${fmt(s.exp)} (baada ya siku ${s.days}).\nKiasi: ${tsh(t.rentAmount)}/mwezi.\n\nTafadhali jitayarishe kulipa.${own}\n\nAsante.`;
+  return `mailto:${t.email||''}?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body)}`;
+}
+
+function oMail() {
+  const exp = tenants.filter(t=>{const s=getStatus(t);return s.days!==null&&s.days<=7&&s.days>=0;});
+  const owe = tenants.filter(t=>{const s=getStatus(t);return s.days!==null&&s.days<0;});
+  const b = [`KodiManager — Ripoti\n`,
+    exp.length ? `⚠️ KARIBU KWISHA (${exp.length}):` : null, ...exp.map(t=>{const s=getStatus(t);return`  • ${t.name}, Chumba ${t.room}: ${fmt(s.exp)} (siku ${s.days})`;}),
+    owe.length ? `\n🔴 WADAIWA (${owe.length}):` : null, ...owe.map(t=>{const s=getStatus(t);return`  • ${t.name}, Chumba ${t.room}: imechelewa siku ${Math.abs(s.days)}`;})
+  ].filter(Boolean).join('\n');
+  return `mailto:${cfg.ownerEmail||''}?subject=${encodeURIComponent('KodiManager — Ripoti')}&body=${encodeURIComponent(b)}`;
+}
+
+/* ════════════════════════════════════════════════
+   NOTIFICATIONS
+════════════════════════════════════════════════ */
+function checkNotifBtn() {
+  if ('Notification' in window && Notification.permission !== 'granted') {
+    document.getElementById('notif-btn').style.display = 'block';
+  }
+}
+async function enableNotif() {
+  if ('Notification' in window) {
+    const p = await Notification.requestPermission();
+    if (p === 'granted') {
+      document.getElementById('notif-btn').style.display = 'none';
+      sendNotifs();
+      toast('✅ Arifa zimewezeshwa!');
+    }
+  }
+}
+function sendNotifs() {
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  const seen = JSON.parse(localStorage.getItem('kodi_notif')||'{}');
+  const tod = new Date().toDateString();
+  tenants.forEach(t => {
+    const s = getStatus(t);
+    if (s.days !== null && s.days <= 7 && s.days >= 0 && seen[t.id] !== tod) {
+      new Notification(`🏠 KodiManager: ${t.name}`, {body:`Kodi ya Chumba ${t.room} inaisha ${s.days===0?'LEO':'baada ya siku '+s.days} — ${fmt(s.exp)}`});
+      seen[t.id] = tod;
+    }
+  });
+  localStorage.setItem('kodi_notif', JSON.stringify(seen));
+}
+
+/* ════════════════════════════════════════════════
+   IMAGE COMPRESSION
+════════════════════════════════════════════════ */
+function compressImg(file, maxW=450, q=0.55) {
+  return new Promise((res, rej) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const r = Math.min(maxW/img.width, 1);
+      const c = document.createElement('canvas');
+      c.width = img.width*r; c.height = img.height*r;
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      res(c.toDataURL('image/jpeg', q));
+    };
+    img.onerror = rej; img.src = url;
+  });
+}
+
+/* ════════════════════════════════════════════════
+   MODALS
+════════════════════════════════════════════════ */
+let currentModal = null;
+let editPaymentId = null;
+
+function openModal(type, data=null) {
+  currentModal = type;
+  editPaymentId = null;
+  const box = document.getElementById('modal-box');
+  let html = '';
+
+  if (type === 'addT') {
+    const td = new Date().toISOString().split('T')[0];
+    html = `<div class="mh"><div class="mt">➕ Sajili Mpangaji Mpya</div><button class="xb" onclick="closeModal()">×</button></div>
+      <div class="field"><label class="fl">Jina Kamili *</label><input class="inp" id="f-name" placeholder="Mfano: Anna Msigwa"/></div>
+      <div class="i2">
+        <div class="field"><label class="fl">Simu *</label><input class="inp" id="f-phone" type="tel" placeholder="0712345678"/></div>
+        <div class="field"><label class="fl">Nambari ya Chumba *</label><input class="inp" id="f-room" placeholder="A1"/></div>
+      </div>
+      <div class="field"><label class="fl">Email (hiari — kwa arifa)</label><input class="inp" id="f-email" type="email" placeholder="anna@gmail.com"/></div>
+      <div class="i2">
+        <div class="field"><label class="fl">Kodi kwa Mwezi (TSh) *</label><input class="inp" id="f-rent" type="number" placeholder="40000"/></div>
+        <div class="field"><label class="fl">Muda wa Kodi</label><select class="inp" id="f-dur">
+          <option value="1">1 Mwezi</option><option value="2">2 Miezi</option><option value="3">3 Miezi</option><option value="6">6 Miezi</option><option value="12">12 Miezi</option>
+        </select></div>
+      </div>
+      <div class="field"><label class="fl">Tarehe ya Kuhamia *</label><input class="inp" id="f-date" type="date" value="${td}"/>
+        <span class="fh">⚠️ Kodi itahesabiwa kutoka tarehe hii — si tarehe ya malipo</span></div>
+      <div class="field"><label class="fl">Maelezo (hiari)</label><textarea class="inp" id="f-notes" rows="2" style="resize:none"></textarea></div>
+      <div class="m2">
+        <button class="btn btn-gh" onclick="closeModal()">Ghairi</button>
+        <button class="btn btn-g" onclick="submitAddTenant()">✅ Sajili na Hifadhi</button>
+      </div>`;
+  }
+  else if (type === 'editT') {
+    const t = tenants.find(x=>x.id===currentTenantId);
+    html = `<div class="mh"><div class="mt">✏️ Hariri Maelezo</div><button class="xb" onclick="closeModal()">×</button></div>
+      <div class="field"><label class="fl">Jina Kamili</label><input class="inp" id="f-name" value="${esc(t.name||'')}"/></div>
+      <div class="i2">
+        <div class="field"><label class="fl">Simu</label><input class="inp" id="f-phone" type="tel" value="${esc(t.phone||'')}"/></div>
+        <div class="field"><label class="fl">Chumba</label><input class="inp" id="f-room" value="${esc(t.room||'')}"/></div>
+      </div>
+      <div class="field"><label class="fl">Email</label><input class="inp" id="f-email" type="email" value="${esc(t.email||'')}"/></div>
+      <div class="i2">
+        <div class="field"><label class="fl">Kodi/Mwezi (TSh)</label><input class="inp" id="f-rent" type="number" value="${esc(t.rentAmount||'')}"/></div>
+        <div class="field"><label class="fl">Muda wa Kodi</label><select class="inp" id="f-dur">
+          ${[1,2,3,6,12].map(m=>`<option value="${m}"${t.rentDuration==m?' selected':''}>${m} ${m===1?'Mwezi':'Miezi'}</option>`).join('')}
+        </select></div>
+      </div>
+      <div class="field"><label class="fl">Tarehe ya Kuhamia</label><input class="inp" id="f-date" type="date" value="${t.moveInDate||''}"/>
+        <span class="fh">Kubadilisha hii kutabadilisha mzunguko wote wa kodi</span></div>
+      <div class="field"><label class="fl">Maelezo</label><textarea class="inp" id="f-notes" rows="2" style="resize:none">${esc(t.notes||'')}</textarea></div>
+      <div class="m2">
+        <button class="btn btn-gh" onclick="closeModal()">Ghairi</button>
+        <button class="btn btn-g" onclick="submitEditTenant()">✅ Hifadhi Mabadiliko</button>
+      </div>`;
+  }
+  else if (type === 'addP') {
+    const td = new Date().toISOString().split('T')[0];
+    html = `<div class="mh"><div class="mt">💳 Rekodi Malipo</div><button class="xb" onclick="closeModal()">×</button></div>
+      <div class="i2">
+        <div class="field"><label class="fl">Kiasi (TSh) *</label><input class="inp" id="f-amt" type="number" placeholder="120000"/></div>
+        <div class="field"><label class="fl">Tarehe ya Malipo</label><input class="inp" id="f-pdate" type="date" value="${td}"/></div>
+      </div>
+      <div class="field"><label class="fl">Nambari ya Risiti (hiari)</label><input class="inp" id="f-rno" placeholder="RCP-001"/></div>
+      <div class="field"><label class="fl">Picha ya Risiti (hiari)</label>
+        <label class="uzone" id="uzone-pay" for="f-img-pay">📎 Gusa hapa kupakia picha ya risiti</label>
+        <input type="file" accept="image/*" id="f-img-pay" style="display:none" onchange="handleImg('pay')"/>
+        <span class="fh">Picha itabanwa kiotomatiki — haitachukua nafasi nyingi</span>
+      </div>
+      <div class="field"><label class="fl">Maelezo (hiari)</label><input class="inp" id="f-pnotes" placeholder="Kodi ya Januari 2025..."/></div>
+      <div class="m2">
+        <button class="btn btn-gh" onclick="closeModal()">Ghairi</button>
+        <button class="btn btn-g" id="submit-pay" onclick="submitAddPayment()">✅ Hifadhi Malipo</button>
+      </div>`;
+  }
+  else if (type === 'editP') {
+    const p = data;
+    editPaymentId = p.id;
+    html = `<div class="mh"><div class="mt">✏️ Hariri Malipo</div><button class="xb" onclick="closeModal()">×</button></div>
+      <div class="i2">
+        <div class="field"><label class="fl">Kiasi (TSh) *</label><input class="inp" id="f-amt" type="number" value="${esc(p.amount||'')}"/></div>
+        <div class="field"><label class="fl">Tarehe ya Malipo</label><input class="inp" id="f-pdate" type="date" value="${p.date||''}"/></div>
+      </div>
+      <div class="field"><label class="fl">Nambari ya Risiti</label><input class="inp" id="f-rno" value="${esc(p.receiptNo||'')}"/></div>
+      <div class="field"><label class="fl">Maelezo</label><input class="inp" id="f-pnotes" value="${esc(p.notes||'')}"/></div>
+      <div class="m2">
+        <button class="btn btn-gh" onclick="closeModal()">Ghairi</button>
+        <button class="btn btn-g" onclick="submitEditPayment()">✅ Hifadhi</button>
+      </div>`;
+  }
+  else if (type === 'addD') {
+    html = `<div class="mh"><div class="mt">📄 Ongeza Hati / Kitambulisho</div><button class="xb" onclick="closeModal()">×</button></div>
+      <div class="field"><label class="fl">Aina ya Hati</label><select class="inp" id="f-dtype">
+        <option>Kitambulisho cha Taifa</option><option>Kadi ya Chuo</option><option>Risiti ya Malipo</option><option>Mkataba wa Kukodisha</option><option>Cheki ya Benki</option><option>Nyaraka Nyingine</option>
+      </select></div>
+      <div class="field"><label class="fl">Jina la Hati (hiari)</label><input class="inp" id="f-dname" placeholder="ID ya Anna"/></div>
+      <div class="field"><label class="fl">Picha ya Hati *</label>
+        <label class="uzone" id="uzone-doc" for="f-img-doc">📎 Gusa kupakia picha ya hati</label>
+        <input type="file" accept="image/*" id="f-img-doc" style="display:none" onchange="handleImg('doc')"/>
+        <span class="fh">Picha itabanwa kiotomatiki</span>
+      </div>
+      <div class="m2">
+        <button class="btn btn-gh" onclick="closeModal()">Ghairi</button>
+        <button class="btn btn-g" id="submit-doc" onclick="submitAddDoc()">✅ Hifadhi</button>
+      </div>`;
+  }
+  else if (type === 'cfg') {
+    const used = () => { try { return ((localStorage.getItem(DK)||'').length/1024).toFixed(0)+'KB'; } catch { return '?'; } };
+    html = `<div class="mh"><div class="mt">⚙️ Mipangilio</div><button class="xb" onclick="closeModal()">×</button></div>
+      <div class="field"><label class="fl">Jina Lako (Mwenye Nyumba)</label><input class="inp" id="f-oname" value="${esc(cfg.ownerName||'')}" placeholder="Jina lako"/></div>
+      <div class="field"><label class="fl">Nambari Yako ya Simu</label><input class="inp" id="f-ophone" type="tel" value="${esc(cfg.ownerPhone||'')}" placeholder="0712345678"/></div>
+      <div class="field"><label class="fl">Email Yako</label><input class="inp" id="f-oemail" type="email" value="${esc(cfg.ownerEmail||'')}" placeholder="wewe@gmail.com"/>
+        <span class="fh">Itatumika kupata ripoti ya wapangaji</span></div>
+      <div class="stobar"><span>💾 Nafasi inayotumiwa</span><span style="font-weight:700;color:var(--gr)">${used()} / ~5MB</span></div>
+      <div class="inote">
+        <b>💡 Jinsi Data Inavyohifadhiwa</b><br/>
+        Data inasave kiotomatiki kwenye browser hii hii. <b>Lazima utumie browser moja tu</b> kila wakati (Edge au Chrome). Usiitumie InPrivate/Incognito mode — data itafutwa ukifunga.<br/><br/>
+        <b>🔔 Arifa</b> — gusa "Arifa" juu kuziwezesha<br/>
+        <b>🔒 Kufunga Kiotomatiki</b> — wiki 1 baada ya kodi kuisha
+      </div>
+      <div class="m2">
+        <button class="btn btn-gh" onclick="closeModal()">Ghairi</button>
+        <button class="btn btn-g" onclick="submitCfg()">✅ Hifadhi</button>
+      </div>
+      <div class="divider"></div>
+      <button class="btn btn-rd" onclick="resetAll()">🗑️ Futa Data Yote na Anza Upya</button>`;
+  }
+
+  box.innerHTML = html;
+  document.getElementById('overlay').classList.add('open');
+  // Focus first input
+  setTimeout(() => { const inp = box.querySelector('.inp'); if (inp) inp.focus(); }, 100);
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+  imgData = {pay: null, doc: null};
+}
+
+/* ── FORM SUBMISSIONS ── */
+function submitAddTenant() {
+  const name = document.getElementById('f-name')?.value.trim();
+  const phone = document.getElementById('f-phone')?.value.trim();
+  const room = document.getElementById('f-room')?.value.trim();
+  const rent = document.getElementById('f-rent')?.value;
+  const date = document.getElementById('f-date')?.value;
+  if (!name) { alert('Weka jina la mpangaji'); return; }
+  if (!phone) { alert('Weka nambari ya simu'); return; }
+  if (!room) { alert('Weka nambari ya chumba'); return; }
+  if (!rent) { alert('Weka kiasi cha kodi kwa mwezi'); return; }
+  if (!date) { alert('Weka tarehe ya kuhamia'); return; }
+  tenants.push({
+    id: uid(), name, phone, room,
+    email: document.getElementById('f-email')?.value.trim() || '',
+    rentAmount: rent,
+    rentDuration: document.getElementById('f-dur')?.value || '1',
+    moveInDate: date,
+    notes: document.getElementById('f-notes')?.value.trim() || '',
+    payments: [], documents: [], isLocked: false,
+    createdAt: new Date().toISOString()
+  });
+  saveData();
+  closeModal();
+  renderHome();
+  toast('✅ ' + name + ' amesajiliwa!');
+}
+
+function submitEditTenant() {
+  const name = document.getElementById('f-name')?.value.trim();
+  if (!name) { alert('Weka jina'); return; }
+  tenants = tenants.map(t => t.id===currentTenantId ? {...t,
+    name, phone: document.getElementById('f-phone')?.value.trim()||'',
+    room: document.getElementById('f-room')?.value.trim()||'',
+    email: document.getElementById('f-email')?.value.trim()||'',
+    rentAmount: document.getElementById('f-rent')?.value||'',
+    rentDuration: document.getElementById('f-dur')?.value||'1',
+    moveInDate: document.getElementById('f-date')?.value||'',
+    notes: document.getElementById('f-notes')?.value.trim()||''
+  } : t);
+  saveData();
+  closeModal();
+  renderDetail();
+  toast('✅ Maelezo yamesasishwa!');
+}
+
+let imgData = {pay: null, doc: null};
+
+async function handleImg(type) {
+  const file = document.getElementById('f-img-' + type)?.files[0];
+  if (!file) return;
+  const zone = document.getElementById('uzone-' + type);
+  const btn = document.getElementById('submit-' + type);
+  zone.textContent = '⏳ Inapakia na kubana picha...';
+  zone.classList.remove('ok');
+  if (btn) btn.disabled = true;
+  try {
+    imgData[type] = await compressImg(file);
+    zone.textContent = '✅ Picha imepakiwa — gusa kubadilisha';
+    zone.classList.add('ok');
+  } catch {
+    zone.textContent = '❌ Imeshindwa kupakia picha';
+    imgData[type] = null;
+  }
+  if (btn) btn.disabled = false;
+}
+
+function submitAddPayment() {
+  const amt = document.getElementById('f-amt')?.value;
+  if (!amt) { alert('Weka kiasi cha malipo'); return; }
+  const pay = {
+    id: uid(),
+    amount: amt,
+    date: document.getElementById('f-pdate')?.value || new Date().toISOString().split('T')[0],
+    receiptNo: document.getElementById('f-rno')?.value.trim() || '',
+    notes: document.getElementById('f-pnotes')?.value.trim() || '',
+    receiptImage: imgData.pay || null
   };
-  return(<Modal title="📄 Ongeza Hati / Kitambulisho" onClose={onClose}>
-    <Field l="Aina ya Hati">
-      <select className="inp" value={f.type} onChange={e=>s("type",e.target.value)}>
-        {["Kitambulisho cha Taifa","Kadi ya Chuo","Risiti ya Malipo","Mkataba wa Kukodisha","Cheki ya Benki","Nyaraka Nyingine"].map(o=><option key={o}>{o}</option>)}
-      </select>
-    </Field>
-    <Field l="Jina la Hati (hiari)"><input className="inp" placeholder="Mfano: ID ya Anna" value={f.name} onChange={e=>s("name",e.target.value)}/></Field>
-    <Field l="Picha ya Hati *" hint="Picha itabanwa kiotomatiki">
-      <label className={`uzone${f.image?" ok":""}`}>
-        {uploading ? "⏳ Inapakia..." : f.image ? "✅ Picha imepakiwa" : "📎 Gusa kupakia picha ya hati"}
-        <input type="file" accept="image/*" onChange={handleImg} style={{display:"none"}}/>
-      </label>
-    </Field>
-    <div className="m-2col">
-      <button className="btn btn-ghost" onClick={onClose}>Ghairi</button>
-      <button className="btn btn-green" disabled={uploading} onClick={()=>{if(!f.image)return alert("Pakia picha kwanza");onAdd(tid,{...f,uploadedAt:new Date().toISOString()})}}>✅ Hifadhi</button>
-    </div>
-  </Modal>);
+  tenants = tenants.map(t => t.id===currentTenantId ? {...t, payments:[...t.payments, pay]} : t);
+  saveData();
+  imgData.pay = null;
+  closeModal();
+  renderDetail();
+  toast('✅ Malipo yamehifadhiwa!');
 }
 
-function CfgModal({cfg,tenants,onSave,onReset,onClose}){
-  const [f,sf] = useState({ownerName:cfg.ownerName||"",ownerPhone:cfg.ownerPhone||"",ownerEmail:cfg.ownerEmail||""});
-  const s = (k,v) => sf(p=>({...p,[k]:v}));
-  const exp = tenants.filter(t=>{ const st=getStatus(t); return st.days!==null&&st.days<=7&&st.days>=0; });
-  const owe = tenants.filter(t=>{ const st=getStatus(t); return st.days!==null&&st.days<0; });
-  const used = () => { try{ return ((localStorage.getItem(DATA_KEY)||"").length/1024).toFixed(0)+"KB"; }catch{ return "?"; } };
-  return(<Modal title="⚙️ Mipangilio" onClose={onClose}>
-    <Field l="Jina Lako (Mwenye Nyumba)"><input className="inp" placeholder="Jina lako" value={f.ownerName} onChange={e=>s("ownerName",e.target.value)}/></Field>
-    <Field l="Nambari Yako ya Simu"><input className="inp" placeholder="0712345678" type="tel" value={f.ownerPhone} onChange={e=>s("ownerPhone",e.target.value)}/></Field>
-    <Field l="Email Yako" hint="Itatumika kupata ripoti ya wapangaji kwa email">
-      <input className="inp" placeholder="wewe@gmail.com" type="email" value={f.ownerEmail} onChange={e=>s("ownerEmail",e.target.value)}/>
-    </Field>
-    {(exp.length>0||owe.length>0) && f.ownerEmail && (
-      <a href={makeOwnerEmail({...cfg,...f},tenants)} className="btn btn-email" style={{textAlign:"center",padding:"11px"}}>
-        📧 Tuma Ripoti ({exp.length} karibu kwisha + {owe.length} wadaiwa)
-      </a>
-    )}
-    <div className="sto-bar">
-      <span>💾 Nafasi inayotumiwa</span>
-      <span style={{fontWeight:700,color:"var(--green)"}}>{used()} / ~5MB</span>
-    </div>
-    <div className="info-note">
-      <b>💡 Jinsi App Inavyofanya Kazi</b><br/>
-      Data inasave kiotomatiki kwenye browser unayoitumia daima. Tumia browser moja tu (Edge au Chrome) kila wakati — data haishirikiwi kati ya browsers.<br/><br/>
-      <b>🔔 Arifa za Browser</b> — gusa "Arifa" juu kuziwezesha. App itatoa notification siku 7 kabla kodi haijaisha.<br/><br/>
-      <b>🔒 Kufunga Kiotomatiki</b> — mpangaji anafungwa kiotomatiki akichelewa zaidi ya wiki 1 baada ya kodi kuisha.
-    </div>
-    <div className="m-2col">
-      <button className="btn btn-ghost" onClick={onClose}>Ghairi</button>
-      <button className="btn btn-green" onClick={()=>onSave(f)}>✅ Hifadhi</button>
-    </div>
-    <div className="divider"/>
-    <button className="btn btn-red" onClick={onReset}>🗑️ Futa Data Yote na Anza Upya</button>
-  </Modal>);
+function submitEditPayment() {
+  const amt = document.getElementById('f-amt')?.value;
+  if (!amt) { alert('Weka kiasi'); return; }
+  tenants = tenants.map(t => t.id===currentTenantId ? {...t,
+    payments: t.payments.map(p => p.id===editPaymentId ? {...p,
+      amount: amt,
+      date: document.getElementById('f-pdate')?.value || p.date,
+      receiptNo: document.getElementById('f-rno')?.value.trim() || '',
+      notes: document.getElementById('f-pnotes')?.value.trim() || ''
+    } : p)
+  } : t);
+  saveData();
+  closeModal();
+  renderDetail();
+  toast('✅ Malipo yamesasishwa!');
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+function submitAddDoc() {
+  if (!imgData.doc) { alert('Pakia picha kwanza'); return; }
+  const doc = {
+    id: uid(),
+    name: document.getElementById('f-dname')?.value.trim() || '',
+    type: document.getElementById('f-dtype')?.value || 'Kitambulisho cha Taifa',
+    image: imgData.doc,
+    uploadedAt: new Date().toISOString()
+  };
+  tenants = tenants.map(t => t.id===currentTenantId ? {...t, documents:[...(t.documents||[]), doc]} : t);
+  saveData();
+  imgData.doc = null;
+  closeModal();
+  renderDetail();
+  toast('✅ Hati imehifadhiwa!');
+}
+
+function submitCfg() {
+  cfg = {
+    ownerName: document.getElementById('f-oname')?.value.trim() || '',
+    ownerPhone: document.getElementById('f-ophone')?.value.trim() || '',
+    ownerEmail: document.getElementById('f-oemail')?.value.trim() || ''
+  };
+  saveCfg();
+  closeModal();
+  toast('✅ Mipangilio imehifadhiwa!');
+}
+
+function resetAll() {
+  if (!confirm('Futa DATA YOTE? Haiwezi kurudishwa!')) return;
+  if (!confirm('Thibitisha — futa data yote?')) return;
+  localStorage.removeItem(DK);
+  tenants = [];
+  saveData = () => {};
+  location.reload();
+}
+
+/* ════════════════════════════════════════════════
+   INIT
+════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  loadData();
+  autoLock();
+  renderHome();
+  checkNotifBtn();
+  sendNotifs();
+});
 </script>
 </body>
 </html>
