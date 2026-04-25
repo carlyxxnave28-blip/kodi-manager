@@ -796,9 +796,7 @@ function openModal(type,data=null) {
       <div class="field"><label class="fl">Email (hiari)</label><input class="inp" id="f-email" type="email" placeholder="anna@gmail.com"/></div>
       <div class="i2">
         <div class="field"><label class="fl">Kodi/Mwezi (TSh) *</label><input class="inp" id="f-rent" type="number" placeholder="40000"/></div>
-        <div class="field"><label class="fl">Muda wa Kodi</label><select class="inp" id="f-dur">
-          <option value="1">1 Mwezi</option><option value="2">2 Miezi</option><option value="3">3 Miezi</option><option value="6">6 Miezi</option><option value="12">12 Miezi</option>
-        </select></div>
+        <div class="field"><label class="fl">Muda wa Kodi (Miezi)</label><input class="inp" id="f-dur" type="number" min="1" max="60" placeholder="1" value="1"/></div>
       </div>
       <div class="field"><label class="fl">Tarehe ya Kuhamia *</label><input class="inp" id="f-date" type="date" value="${td}"/>
         <span class="fh">⚠️ Kodi itahesabiwa kutoka tarehe hii</span></div>
@@ -816,7 +814,7 @@ function openModal(type,data=null) {
       <div class="field"><label class="fl">Email</label><input class="inp" id="f-email" type="email" value="${esc(t.email||'')}"/></div>
       <div class="i2">
         <div class="field"><label class="fl">Kodi/Mwezi (TSh)</label><input class="inp" id="f-rent" type="number" value="${esc(t.rentAmount||'')}"/></div>
-        <div class="field"><label class="fl">Muda wa Kodi</label><select class="inp" id="f-dur">${[1,2,3,6,12].map(m=>`<option value="${m}"${t.rentDuration==m?' selected':''}>${m} ${m===1?'Mwezi':'Miezi'}</option>`).join('')}</select></div>
+        <div class="field"><label class="fl">Muda wa Kodi (Miezi)</label><input class="inp" id="f-dur" type="number" min="1" max="60" value="${t.rentDuration||1}"/></div>
       </div>
       <div class="field"><label class="fl">Tarehe ya Kuhamia</label><input class="inp" id="f-date" type="date" value="${t.moveInDate||''}"/>
         <span class="fh">Kubadilisha hii kutabadilisha mzunguko wote wa kodi</span></div>
