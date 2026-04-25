@@ -292,6 +292,16 @@ async function fbPush(path, data) {
 }
 
 /* ── SYNC ── */
+function fixTenant(t) {
+  if (!t) return t;
+  if (t.payments && !Array.isArray(t.payments)) t.payments = Object.values(t.payments);
+  if (!t.payments) t.payments = [];
+  if (t.documents && !Array.isArray(t.documents)) t.documents = Object.values(t.documents);
+  if (!t.documents) t.documents = [];
+  if (!t.id) t.id = t.fbKey || uid();
+  return t;
+}
+
 function showSync(state) {
   const p = document.getElementById('sync-pill');
   p.className = 'sync-pill show sync-' + state;
@@ -316,7 +326,7 @@ async function loadFromFirebase() {
     showSync('err');
     document.getElementById('sync-status').textContent = '🔴 Hakuna mtandao — jaribu tena';
     // fallback to local
-    try { tenants = JSON.parse(localStorage.getItem('kodi_backup')||'[]'); } catch {}
+    try { const bk=JSON.parse(localStorage.getItem('kodi_backup')||'[]'); tenants=bk.map(t=>fixTenant(t)); } catch {}
   }
 }
 
@@ -364,7 +374,7 @@ function startRealtimeSync() {
       if (d.data === null) {
         tenants = [];
       } else if (typeof d.data === 'object') {
-        tenants = Object.entries(d.data).map(([fbKey,t]) => ({...t, fbKey}));
+        tenants = Object.entries(d.data).map(([fbKey,t]) => fixTenant({...t, fbKey}));
       }
       autoLock();
       renderAll();
@@ -378,8 +388,8 @@ function startRealtimeSync() {
             tenants = tenants.filter(t => t.fbKey !== fbKey);
           } else {
             const idx = tenants.findIndex(t => t.fbKey === fbKey);
-            if (idx >= 0) tenants[idx] = {...val, fbKey};
-            else tenants.push({...val, fbKey});
+            if (idx >= 0) tenants[idx] = fixTenant({...val, fbKey});
+            else tenants.push(fixTenant({...val, fbKey}));
           }
         });
         autoLock();
