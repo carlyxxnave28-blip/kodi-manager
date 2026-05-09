@@ -333,14 +333,13 @@ async function loadFromFirebase() {
 async function saveTenant(t) {
   showSync('ing');
   try {
-    if (t.fbKey) {
-      await fbSet('/tenants/' + t.fbKey, stripFbKey(t));
-    } else {
-      const res = await fbPush('/tenants', stripFbKey(t));
-      t.fbKey = res.name;
-    }
+    // Ensure tenant has an id
+    if (!t.id) t.id = uid();
+    // Use id as Firebase key for consistency
+    const key = t.fbKey || t.id;
+    t.fbKey = key;
+    await fbSet('/tenants/' + key, stripFbKey(t));
     showSync('ok');
-    // Local backup
     localStorage.setItem('kodi_backup', JSON.stringify(tenants));
     return true;
   } catch(e) {
@@ -608,12 +607,17 @@ function renderDef() {
 
 /* ── DETAIL ── */
 function openDetail(id) {
-  currentTenantId=id; currentTab='pay';
-  showPage('detail'); renderDetail();
+  // Find by id or fbKey
+  const t = tenants.find(x => x.id === id || x.fbKey === id);
+  if (!t) { toast('Mpangaji hapatikani', true); return; }
+  currentTenantId = t.id || t.fbKey;
+  currentTab = 'pay';
+  showPage('detail');
+  renderDetail();
 }
 
 function renderDetail() {
-  const t=tenants.find(x=>x.id===currentTenantId);
+  const t=tenants.find(x=>x.id===currentTenantId||x.fbKey===currentTenantId);
   if(!t){showPage('home');return;}
   const s=getStatus(t),tc=tagCls(s.c),bc=sbCls(s.c);
   const total=t.payments.reduce((x,p)=>x+(parseFloat(p.amount)||0),0);
@@ -700,7 +704,7 @@ function renderDetail() {
 }
 
 function viewImg(id, type) {
-  const t=tenants.find(x=>x.id===currentTenantId);
+  const t=tenants.find(x=>x.id===currentTenantId||x.fbKey===currentTenantId);
   if(!t)return;
   const src=type==='pay'?t.payments.find(p=>p.id===id)?.receiptImage:t.documents?.find(d=>d.id===id)?.image;
   if(src)window.open(src);
@@ -719,25 +723,30 @@ function switchTab(tab) {
    CRUD
 ══════════════════════════════════════════════ */
 async function toggleLock(id) {
-  const t=tenants.find(x=>x.id===id);
-  if(!t)return;
-  t.isLocked=!t.isLocked;
-  await saveTenant(t);
-  renderAll();
+  const t = tenants.find(x => x.id === id || x.fbKey === id);
+  if (!t) { console.error('Tenant not found:', id); return; }
+  t.isLocked = !t.isLocked;
+  const ok = await saveTenant(t);
+  if (ok) {
+    renderAll();
+    if (currentTenantId === id) renderDetail();
+    toast(t.isLocked ? '🔒 Mpangaji amefungwa' : '🔓 Mpangaji amefunguliwa');
+  }
 }
 
 async function delTenant(id) {
   if(!confirm('Futa mpangaji huyu kabisa?'))return;
-  const t=tenants.find(x=>x.id===id);
-  if(t?.fbKey)await deleteTenantFromFB(t.fbKey);
-  tenants=tenants.filter(x=>x.id!==id);
+  const t=tenants.find(x=>x.id===id||x.fbKey===id);
+  const key=t?.fbKey||id;
+  await deleteTenantFromFB(key);
+  tenants=tenants.filter(x=>x.id!==id&&x.fbKey!==id);
   localStorage.setItem('kodi_backup',JSON.stringify(tenants));
   showPage('home'); toast('Mpangaji amefutwa',true);
 }
 
 async function delPayment(pid) {
   if(!confirm('Futa malipo haya?'))return;
-  const t=tenants.find(x=>x.id===currentTenantId);
+  const t=tenants.find(x=>x.id===currentTenantId||x.fbKey===currentTenantId);
   if(!t)return;
   t.payments=t.payments.filter(p=>p.id!==pid);
   await saveTenant(t);
@@ -745,7 +754,7 @@ async function delPayment(pid) {
 }
 
 function editPayment(pid) {
-  const t=tenants.find(x=>x.id===currentTenantId);
+  const t=tenants.find(x=>x.id===currentTenantId||x.fbKey===currentTenantId);
   openModal('editP',t?.payments.find(p=>p.id===pid));
 }
 
@@ -804,7 +813,7 @@ function openModal(type,data=null) {
       <div class="m2"><button class="btn btn-gh" onclick="closeModal()">Ghairi</button><button class="btn btn-g" onclick="submitAddT()">✅ Sajili na Hifadhi</button></div>`;
   }
   else if(type==='editT') {
-    const t=tenants.find(x=>x.id===currentTenantId);
+    const t=tenants.find(x=>x.id===currentTenantId||x.fbKey===currentTenantId);
     h=`<div class="mh"><div class="mt">✏️ Hariri Maelezo</div><button class="xb" onclick="closeModal()">×</button></div>
       <div class="field"><label class="fl">Jina Kamili</label><input class="inp" id="f-name" value="${esc(t.name||'')}"/></div>
       <div class="i2">
@@ -814,7 +823,7 @@ function openModal(type,data=null) {
       <div class="field"><label class="fl">Email</label><input class="inp" id="f-email" type="email" value="${esc(t.email||'')}"/></div>
       <div class="i2">
         <div class="field"><label class="fl">Kodi/Mwezi (TSh)</label><input class="inp" id="f-rent" type="number" value="${esc(t.rentAmount||'')}"/></div>
-        <div class="field"><label class="fl">Muda wa Kodi (Miezi)</label><input class="inp" id="f-dur" type="number" min="1" max="60" value="${t.rentDuration||1}"/></div>
+        <div class="field"><label class="fl">Muda wa Kodi (Miezi)</label><input class="inp" id="f-dur" type="number" min="1" max="60" value="${esc(t.rentDuration||'1')}"/></div>
       </div>
       <div class="field"><label class="fl">Tarehe ya Kuhamia</label><input class="inp" id="f-date" type="date" value="${t.moveInDate||''}"/>
         <span class="fh">Kubadilisha hii kutabadilisha mzunguko wote wa kodi</span></div>
@@ -905,7 +914,7 @@ async function submitAddT() {
 async function submitEditT() {
   const name=document.getElementById('f-name')?.value.trim();
   if(!name)return alert('Weka jina');
-  const t=tenants.find(x=>x.id===currentTenantId);if(!t)return;
+  const t=tenants.find(x=>x.id===currentTenantId||x.fbKey===currentTenantId);if(!t)return;
   Object.assign(t,{name,phone:document.getElementById('f-phone')?.value.trim()||'',room:document.getElementById('f-room')?.value.trim()||'',email:document.getElementById('f-email')?.value.trim()||'',rentAmount:document.getElementById('f-rent')?.value||'',rentDuration:document.getElementById('f-dur')?.value||'1',moveInDate:document.getElementById('f-date')?.value||'',notes:document.getElementById('f-notes')?.value.trim()||''});
   await saveTenant(t);closeModal();renderDetail();toast('✅ Maelezo yamesasishwa!');
 }
@@ -913,7 +922,7 @@ async function submitEditT() {
 async function submitAddP() {
   const amt=document.getElementById('f-amt')?.value;
   if(!amt)return alert('Weka kiasi');
-  const t=tenants.find(x=>x.id===currentTenantId);if(!t)return;
+  const t=tenants.find(x=>x.id===currentTenantId||x.fbKey===currentTenantId);if(!t)return;
   const p={id:uid(),amount:amt,date:document.getElementById('f-pdate')?.value||new Date().toISOString().split('T')[0],receiptNo:document.getElementById('f-rno')?.value.trim()||'',notes:document.getElementById('f-pnotes')?.value.trim()||'',receiptImage:imgData.pay||null};
   t.payments.push(p);
   await saveTenant(t);closeModal();renderDetail();toast('✅ Malipo yamehifadhiwa!');
@@ -921,7 +930,7 @@ async function submitAddP() {
 
 async function submitEditP() {
   const amt=document.getElementById('f-amt')?.value;if(!amt)return alert('Weka kiasi');
-  const t=tenants.find(x=>x.id===currentTenantId);if(!t)return;
+  const t=tenants.find(x=>x.id===currentTenantId||x.fbKey===currentTenantId);if(!t)return;
   const p=t.payments.find(x=>x.id===editPayId);if(!p)return;
   Object.assign(p,{amount:amt,date:document.getElementById('f-pdate')?.value||p.date,receiptNo:document.getElementById('f-rno')?.value.trim()||'',notes:document.getElementById('f-pnotes')?.value.trim()||''});
   await saveTenant(t);closeModal();renderDetail();toast('✅ Malipo yamesasishwa!');
@@ -929,7 +938,7 @@ async function submitEditP() {
 
 async function submitAddD() {
   if(!imgData.doc)return alert('Pakia picha kwanza');
-  const t=tenants.find(x=>x.id===currentTenantId);if(!t)return;
+  const t=tenants.find(x=>x.id===currentTenantId||x.fbKey===currentTenantId);if(!t)return;
   const d={id:uid(),name:document.getElementById('f-dname')?.value.trim()||'',type:document.getElementById('f-dtype')?.value||'Kitambulisho',image:imgData.doc,uploadedAt:new Date().toISOString()};
   if(!t.documents)t.documents=[];
   t.documents.push(d);
